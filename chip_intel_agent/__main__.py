@@ -36,8 +36,8 @@ def configure_logging(verbose: bool) -> None:
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "Scrape authentic chip design/manufacturing sources and YouTube channels, "
-            "summarize into a 3-slide PDF (Trends, Company Logos, Geopolitical Impact), "
+            "Scrape Anastasi In Tech (@AnastasiInTech) for chip design/manufacturing "
+            "coverage, summarize into a 3-slide PDF (Trends, Company Logos, Geopolitical Impact), "
             "and optionally email it."
         )
     )
@@ -92,7 +92,7 @@ def run(argv: list[str] | None = None) -> int:
         log.info("Emailed existing PDF to %s", recipient)
         return 0
 
-    log.info("Scraping authentic web and YouTube sources…")
+    log.info("Scraping Anastasi In Tech (@AnastasiInTech)…")
     scrape_payload = scrape_all()
     scrape_path = args.data_dir / "scrape.json"
     scrape_path.write_text(json.dumps(scrape_payload, indent=2))

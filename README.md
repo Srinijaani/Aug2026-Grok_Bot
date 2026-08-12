@@ -1,6 +1,8 @@
 # Chip Intel Briefing Agent
 
-Automated agent that scrapes **authentic websites** and **YouTube channels** for the latest chip design and manufacturing intelligence, summarizes it, and produces a **3-slide PDF**:
+Automated agent that scrapes **Anastasi In Tech**
+([@AnastasiInTech](https://www.youtube.com/@AnastasiInTech)) for the latest chip design and
+manufacturing intelligence, summarizes it, and produces a **3-slide PDF**:
 
 1. **Trends** — process nodes, packaging, AI silicon, equipment
 2. **Company Logos** — key foundry / fabless / equipment / IP leaders
@@ -43,13 +45,13 @@ python3 run_briefing.py --email-only
 | `EMAIL_FROM` | no | `SMTP_USER` |
 | `EMAIL_TO` | no | `sriniwas.gattani@gmail.com` |
 
-## Sources
+## Source
 
-Curated authentic feeds include Semiconductor Engineering, Electronics Weekly, EE Times, IEEE Spectrum, Google News semiconductor queries, plus YouTube channels such as Asianometry, High Yield, Branch Education, TechTechPotato, and ColdFusion.
+**Sole content source:** [Anastasi In Tech](https://www.youtube.com/@AnastasiInTech) (`@AnastasiInTech`).
 
 ## Outputs
 
-- `output/scrape.json` — raw scraped articles/videos
+- `output/scrape.json` — raw scraped videos
 - `output/briefing.json` — structured summary
 - `output/chip_briefing.pdf` — 3-slide presentation
 - `output/assets/logos/` — generated company logo tiles

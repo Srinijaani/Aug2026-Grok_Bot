@@ -47,6 +47,20 @@ def _clean_text(value: str | None, limit: int = 600) -> str:
         return ""
     text = re.sub(r"<[^>]+>", " ", value)
     text = re.sub(r"\s+", " ", text).strip()
+    # Drop common YouTube sponsorship / CTA tails that pollute summaries.
+    for marker in (
+        "Subscribe and watch",
+        "Check out Plaud",
+        "Go to https://",
+        "Use code ",
+        "use code ",
+        "Get an exclusive",
+        "Sponsored by",
+    ):
+        idx = text.find(marker)
+        if idx > 40:
+            text = text[:idx].rstrip(" -|•")
+            break
     return text[:limit]
 
 
@@ -122,7 +136,7 @@ def scrape_web_sources(sources: list[WebSource] | None = None, per_source: int =
 
 
 def scrape_youtube_channels(
-    channels: list[YouTubeChannel] | None = None, per_channel: int = 5
+    channels: list[YouTubeChannel] | None = None, per_channel: int = 15
 ) -> list[ScrapedItem]:
     channels = channels or YOUTUBE_CHANNELS
     collected: list[ScrapedItem] = []

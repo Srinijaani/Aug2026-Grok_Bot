@@ -72,8 +72,8 @@ def build_message(
         f"Articles scraped: {stats.get('articles', 'n/a')}\n"
         f"YouTube videos scraped: {stats.get('videos', 'n/a')}\n"
         f"Sources used: {stats.get('sources', 'n/a')}\n\n"
-        "This briefing was produced by the Chip Intel Agent from curated authentic websites "
-        "and semiconductor YouTube channels.\n\n"
+        "This briefing was produced by the Chip Intel Agent from Anastasi In Tech "
+        "(https://www.youtube.com/@AnastasiInTech) only.\n\n"
         "Regards,\n"
         "Chip Intel Agent\n"
     )

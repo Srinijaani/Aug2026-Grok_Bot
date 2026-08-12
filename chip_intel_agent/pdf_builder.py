@@ -199,7 +199,7 @@ def _slide_trends(c: canvas.Canvas, briefing: Briefing) -> None:
 
     c.setFillColor(MUTED)
     c.setFont("Helvetica", 8)
-    note = "Curated from authentic industry RSS feeds and verified semiconductor YouTube channels."
+    note = "Sourced exclusively from YouTube: Anastasi In Tech (@AnastasiInTech)."
     for i, line in enumerate(_wrap(c, note, "Helvetica", 8, 1.8 * inch)):
         c.drawString(0.75 * inch, 1.15 * inch - i * 11, line)
 
@@ -314,8 +314,12 @@ def _slide_geopolitics(c: canvas.Canvas, briefing: Briefing) -> None:
     # Trusted channels footnote
     c.setFillColor(MUTED)
     c.setFont("Helvetica-Oblique", 7.5)
-    channels = ", ".join(ch["name"] for ch in briefing.youtube_channels[:5])
-    c.drawString(0.6 * inch, 0.55 * inch, f"Trusted YouTube channels monitored: {channels}")
+    channel = briefing.youtube_channels[0] if briefing.youtube_channels else {"name": "Anastasi In Tech", "url": "https://www.youtube.com/@AnastasiInTech"}
+    c.drawString(
+        0.6 * inch,
+        0.55 * inch,
+        f"Sole source: {channel.get('name', 'Anastasi In Tech')} — {channel.get('url', 'https://www.youtube.com/@AnastasiInTech')}",
+    )
     _draw_footer(c, 3, briefing.generated_at)
 
 
