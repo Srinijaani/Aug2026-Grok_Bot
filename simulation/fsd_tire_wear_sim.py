@@ -26,12 +26,13 @@ OUT = Path(__file__).resolve().parent / "output"
 FIG = OUT / "figures"
 
 # Assumed scenario effects (synthetic — for demo only)
-FSD_NTWR_MULTIPLIER = 1.12          # +12% mean wear under FSD miles
-FSD_REAR_BIAS = 1.08                # extra rear wear under FSD
-FSD_WAI_SHIFT = 0.035               # higher inner/outer asymmetry
-FSD_LSD_MULTIPLIER = 1.18           # more lateral dose
-FSD_LAI_MULTIPLIER = 0.88           # smoother longitudinal (less lead-foot)
-FSD_SSP_MULTIPLIER = 1.15
+# FSD-favorable inversion: smoother pathing / less scrub → lower wear under FSD miles
+FSD_NTWR_MULTIPLIER = 0.88          # −12% mean wear under FSD miles
+FSD_REAR_BIAS = 0.94                # less rear wear under FSD
+FSD_WAI_SHIFT = -0.025              # lower inner/outer asymmetry
+FSD_LSD_MULTIPLIER = 0.82           # less lateral dose
+FSD_LAI_MULTIPLIER = 0.78           # smoother longitudinal (less lead-foot)
+FSD_SSP_MULTIPLIER = 0.85           # less steering-slip scrub
 MANUAL_BASE_NTWR_MM_PER_1K = 0.185  # ~0.185 mm / 1k mi → ~35k mi life on ~6.5 mm usable
 
 MODELS = {
@@ -127,13 +128,13 @@ def simulate_fleet(n: int = N_VEHICLES) -> pd.DataFrame:
         ntwr_manual,
     )
 
-    # Axle-specific: FSD rear bias
+    # Axle-specific wear (FSD-favorable: reduced rear scrub)
     ntwr_front_manual = ntwr_manual * 0.97
     ntwr_rear_manual = ntwr_manual * 1.03
-    ntwr_front_fsd = ntwr_fsd * 0.94
-    ntwr_rear_fsd = ntwr_fsd * (1.06 * FSD_REAR_BIAS)
+    ntwr_front_fsd = ntwr_fsd * 0.99
+    ntwr_rear_fsd = ntwr_fsd * (1.01 * FSD_REAR_BIAS)
 
-    # Wear asymmetry index (inner-outer); higher under FSD + poor alignment
+    # Wear asymmetry index (inner-outer); lower under FSD in this favorable scenario
     wai_manual = np.clip(
         0.04 + (1 - alignment_quality) * 0.12 + aggression * 0.03 + RNG.normal(0, 0.015, n),
         0.0,
@@ -387,7 +388,9 @@ def summarize(fleet: pd.DataFrame, paired: pd.DataFrame) -> dict:
             "FSD_WAI_SHIFT": FSD_WAI_SHIFT,
             "FSD_LSD_MULTIPLIER": FSD_LSD_MULTIPLIER,
             "FSD_LAI_MULTIPLIER": FSD_LAI_MULTIPLIER,
-            "note": "Synthetic assumed effects for methodology demo — not real Cortex/fleet data.",
+            "FSD_SSP_MULTIPLIER": FSD_SSP_MULTIPLIER,
+            "scenario": "fsd_favorable",
+            "note": "Synthetic FSD-favorable assumed effects for methodology demo — not real Cortex/fleet data.",
         },
     }
     return summary
@@ -426,11 +429,11 @@ def make_charts(fleet: pd.DataFrame, paired: pd.DataFrame, monthly: pd.DataFrame
     delta = (fsd_users.ntwr_fsd_mm_per_1k / fsd_users.ntwr_manual_mm_per_1k - 1) * 100
     ax.hist(delta, bins=40, color="#2f6f4e", alpha=0.85)
     ax.axvline(delta.mean(), color="#111", ls="--", label=f"Mean {delta.mean():.1f}%")
-    ax.axvline(15, color="#a33", ls=":", label="15% decision threshold")
+    ax.axvline(0, color="#2f6f4e", ls=":", label="Parity (0%)")
     ax.set_xlabel("Within-vehicle ΔNTWR (FSD / Manual − 1), %")
     ax.set_ylabel("Vehicles")
     ax.legend()
-    style_axes(ax, "Within-vehicle FSD wear premium")
+    style_axes(ax, "Within-vehicle FSD wear delta (negative = FSD better)")
     p = FIG / "02_ntwr_delta.png"
     fig.tight_layout()
     fig.savefig(p, dpi=140)
@@ -472,7 +475,7 @@ def make_charts(fleet: pd.DataFrame, paired: pd.DataFrame, monthly: pd.DataFrame
     ]
     ax.bar(modes, means, color=["#7aa0c4", "#1f4e79", "#e2a37a", "#c45c26"])
     ax.set_ylabel("NTWR (mm / 1,000 mi)")
-    style_axes(ax, "Axle wear: rear bias under FSD (synthetic)")
+    style_axes(ax, "Axle wear: FSD-favorable scenario (synthetic)")
     p = FIG / "04_axle_bias.png"
     fig.tight_layout()
     fig.savefig(p, dpi=140)
@@ -519,9 +522,9 @@ def make_charts(fleet: pd.DataFrame, paired: pd.DataFrame, monthly: pd.DataFrame
     xs = np.linspace(0, 100, 50)
     ax.plot(xs, np.polyval(z, xs), color="#c45c26", lw=2, label="Trend")
     ax.set_xlabel("FSD engagement (% of miles)")
-    ax.set_ylabel("Blended wear premium vs pure-manual (%)")
+    ax.set_ylabel("Blended wear delta vs pure-manual (%)")
     ax.legend()
-    style_axes(ax, "Dose–response: more FSD miles → higher blended wear")
+    style_axes(ax, "Dose–response: more FSD miles → lower blended wear")
     p = FIG / "07_dose_response.png"
     fig.tight_layout()
     fig.savefig(p, dpi=140)
@@ -674,7 +677,8 @@ def write_html(summary: dict, chart_names: list[str]) -> Path:
   <div class="warn">
     <strong>Not real fleet data.</strong> All inputs are synthetic dummy data generated for methodology
     demonstration. No Cortex, Tesla telemetry, or field measurements were used.
-    Assumed FSD NTWR multiplier = {summary['scenario_params']['FSD_NTWR_MULTIPLIER']:.2f}.
+    This run uses an <strong>FSD-favorable</strong> assumption
+    (FSD NTWR multiplier = {summary['scenario_params']['FSD_NTWR_MULTIPLIER']:.2f}).
   </div>
 </header>
 <main>
@@ -683,20 +687,22 @@ def write_html(summary: dict, chart_names: list[str]) -> Path:
   <h2>Executive summary</h2>
   <p>
     Among {summary['n_fsd_capable']:,} FSD-capable vehicles, within-vehicle contrasts show FSD miles wearing
-    tread <strong>{pct(k['ntwr_delta_pct_mean'])}</strong> faster than manual miles
-    (95% CI {k['ntwr_delta_pct_ci95'][0]:+.1f}% to {k['ntwr_delta_pct_ci95'][1]:+.1f}%).
-    Counterfactual tire life falls from
+    tread <strong>{pct(k['ntwr_delta_pct_mean'])}</strong> versus manual miles
+    (95% CI {k['ntwr_delta_pct_ci95'][0]:+.1f}% to {k['ntwr_delta_pct_ci95'][1]:+.1f}%)
+    in this <em>FSD-favorable</em> synthetic scenario.
+    Counterfactual tire life moves from
     <strong>{k['rul_manual_mean_miles']/1000:.1f}k</strong> to
     <strong>{k['rul_fsd_mean_miles']/1000:.1f}k</strong> miles ({pct(k['rul_delta_pct_mean'])}).
-    Rear/front NTWR ratio rises from {k['rear_front_ratio_manual']:.3f} (manual) to
-    {k['rear_front_ratio_fsd']:.3f} (FSD). Lateral dose and steering-slip proxies increase, while
-    longitudinal aggression falls — consistent with smoother throttle but higher cornering scrub.
+    Rear/front NTWR ratio is {k['rear_front_ratio_manual']:.3f} (manual) vs
+    {k['rear_front_ratio_fsd']:.3f} (FSD). Lateral dose, steering-slip, and asymmetry fall alongside
+    longitudinal aggression — consistent with smoother, lower-scrub FSD pathing.
   </p>
   <p>
-    Decision rule (≥15% NTWR premium):
+    Adverse-wear decision rule (≥15% NTWR premium for FSD):
     <strong>{"HIT" if k["decision_rule_hit_15pct"] else "NOT HIT"}</strong>
     at the mean; ≥10% threshold:
-    <strong>{"HIT" if k["decision_rule_hit_10pct"] else "NOT HIT"}</strong>.
+    <strong>{"HIT" if k["decision_rule_hit_10pct"] else "NOT HIT"}</strong>
+    (expected not to hit under an FSD-favorable assumption).
   </p>
 
   <h2>KPI results (FSD-capable, within-vehicle)</h2>
@@ -716,9 +722,9 @@ def write_html(summary: dict, chart_names: list[str]) -> Path:
     <div>
       <h3>Interpretation</h3>
       <ul>
-        <li>Primary wear outcome (NTWR) is elevated under FSD in this synthetic scenario.</li>
-        <li>Mechanism mix: ↑ LSD / SSP / WAI / rear bias; ↓ LAI (smoother long. control).</li>
-        <li>Economics: tire cost intensity rises ~{k['tci_delta_pct_mean']:.1f}% under pure-FSD counterfactual.</li>
+        <li>Primary wear outcome (NTWR) is <strong>lower</strong> under FSD in this FSD-favorable synthetic scenario.</li>
+        <li>Mechanism mix: ↓ LSD / SSP / WAI / rear scrub; ↓ LAI (smoother long. control).</li>
+        <li>Economics: tire cost intensity changes ~{k['tci_delta_pct_mean']:.1f}% under pure-FSD counterfactual.</li>
         <li>Texas heat (TPS) is modeled as a confounder shared across modes, stratified by metro/month.</li>
       </ul>
     </div>

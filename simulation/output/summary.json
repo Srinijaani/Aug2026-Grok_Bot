@@ -8,48 +8,48 @@
   "total_manual_miles": 108923547.13701375,
   "kpi": {
     "ntwr_manual_mean": 0.24542149939815078,
-    "ntwr_fsd_mean": 0.27522089045685083,
-    "ntwr_delta_pct_mean": 12.156352065091584,
+    "ntwr_fsd_mean": 0.2162449853589542,
+    "ntwr_delta_pct_mean": -11.87715194885662,
     "ntwr_delta_pct_ci95": [
-      12.018770710549077,
-      12.293933419634092
+      -11.985251584568589,
+      -11.76905231314465
     ],
     "rul_manual_mean_miles": 27195.583244839898,
-    "rul_fsd_mean_miles": 24304.714451134725,
-    "rul_delta_pct_mean": -10.623045403952798,
+    "rul_fsd_mean_miles": 30933.272937807837,
+    "rul_delta_pct_mean": 13.752487667696448,
     "wai_manual_mean": 0.07005431660129446,
-    "wai_fsd_mean": 0.10495355053292005,
-    "wai_delta_mean": 0.03489923393162557,
-    "lsd_delta_pct_mean": 17.864656367882105,
-    "lai_delta_pct_mean": -11.908985498622448,
-    "ssp_delta_pct_mean": 15.02269915350121,
+    "wai_fsd_mean": 0.04510488691306804,
+    "wai_delta_mean": -0.02494942968822642,
+    "lsd_delta_pct_mean": -18.124318591186736,
+    "lai_delta_pct_mean": -21.9041421017868,
+    "ssp_delta_pct_mean": -14.977300846498784,
     "tci_manual_mean": 39.17095256525614,
-    "tci_fsd_mean": 43.91808542647254,
-    "tci_delta_pct_mean": 12.156352065091584,
+    "tci_fsd_mean": 34.507067120799846,
+    "tci_delta_pct_mean": -11.877151948856621,
     "rear_front_ratio_manual": 1.0618556701030926,
-    "rear_front_ratio_fsd": 1.217872340425532,
+    "rear_front_ratio_fsd": 0.9589898989898986,
     "decision_rule_hit_15pct": false,
-    "decision_rule_hit_10pct": true
+    "decision_rule_hit_10pct": false
   },
   "tests": {
     "ntwr": {
-      "t": 167.70265827016533,
+      "t": -202.44977308681393,
       "p": 0.0
     },
     "wai": {
-      "t": 275.3185251545246,
+      "t": -198.7801346747498,
       "p": 0.0
     },
     "lsd": {
-      "t": 130.00420447943958,
+      "t": -132.24895997220605,
       "p": 0.0
     },
     "lai": {
-      "t": -112.0890672408889,
+      "t": -163.74534078380327,
       "p": 0.0
     },
     "ssp": {
-      "t": 200.2500108627376,
+      "t": -200.76075390747852,
       "p": 0.0
     }
   },
@@ -57,35 +57,35 @@
     {
       "metro": "Austin",
       "n": 1882,
-      "mean_ntwr_blended": 0.2452367416003996,
+      "mean_ntwr_blended": 0.23053679730197577,
       "mean_engagement": 0.2576117162732374,
       "mean_tps": 339.00551775334606
     },
     {
       "metro": "DFW",
       "n": 3206,
-      "mean_ntwr_blended": 0.24995698675282263,
+      "mean_ntwr_blended": 0.2356213774662705,
       "mean_engagement": 0.24536946675711102,
       "mean_tps": 339.82708750226476
     },
     {
       "metro": "Houston",
       "n": 2685,
-      "mean_ntwr_blended": 0.2648423684476368,
+      "mean_ntwr_blended": 0.24945561109690353,
       "mean_engagement": 0.248560279712928,
       "mean_tps": 369.9408747157042
     },
     {
       "metro": "Other TX",
       "n": 1006,
-      "mean_ntwr_blended": 0.23796074716983856,
+      "mean_ntwr_blended": 0.22453608243171244,
       "mean_engagement": 0.2390220536087914,
       "mean_tps": 338.75173395670447
     },
     {
       "metro": "San Antonio",
       "n": 1221,
-      "mean_ntwr_blended": 0.25463127508018313,
+      "mean_ntwr_blended": 0.2401116563261919,
       "mean_engagement": 0.24500047584134288,
       "mean_tps": 338.8593075662122
     }
@@ -94,45 +94,47 @@
     {
       "model": "Cybertruck",
       "n": 501,
-      "mean_ntwr_blended": 0.2898321659839408,
+      "mean_ntwr_blended": 0.2721306463819422,
       "mean_life_manual": 25908.950165734175,
-      "mean_life_fsd": 23186.9045183282
+      "mean_life_fsd": 29510.605750599527
     },
     {
       "model": "Model 3",
       "n": 3502,
-      "mean_ntwr_blended": 0.2448900347602359,
+      "mean_ntwr_blended": 0.23098943627153573,
       "mean_life_manual": 27233.13422138153,
-      "mean_life_fsd": 24329.385496375948
+      "mean_life_fsd": 30964.67244993303
     },
     {
       "model": "Model S",
       "n": 787,
-      "mean_ntwr_blended": 0.25911570793690114,
+      "mean_ntwr_blended": 0.2439359028618648,
       "mean_life_manual": 27357.013265224607,
-      "mean_life_fsd": 24488.399986054355
+      "mean_life_fsd": 31167.054527705546
     },
     {
       "model": "Model X",
       "n": 666,
-      "mean_ntwr_blended": 0.2644818830578484,
+      "mean_ntwr_blended": 0.2492689901784445,
       "mean_life_manual": 26802.16906844609,
-      "mean_life_fsd": 23936.570954481936
+      "mean_life_fsd": 30464.72666934065
     },
     {
       "model": "Model Y",
       "n": 4544,
-      "mean_ntwr_blended": 0.2511912174027286,
+      "mean_ntwr_blended": 0.23654647295412584,
       "mean_life_manual": 27411.63212698407,
-      "mean_life_fsd": 24494.440249175663
+      "mean_life_fsd": 31174.742135314482
     }
   ],
   "scenario_params": {
-    "FSD_NTWR_MULTIPLIER": 1.12,
-    "FSD_REAR_BIAS": 1.08,
-    "FSD_WAI_SHIFT": 0.035,
-    "FSD_LSD_MULTIPLIER": 1.18,
-    "FSD_LAI_MULTIPLIER": 0.88,
-    "note": "Synthetic assumed effects for methodology demo \u2014 not real Cortex/fleet data."
+    "FSD_NTWR_MULTIPLIER": 0.88,
+    "FSD_REAR_BIAS": 0.94,
+    "FSD_WAI_SHIFT": -0.025,
+    "FSD_LSD_MULTIPLIER": 0.82,
+    "FSD_LAI_MULTIPLIER": 0.78,
+    "FSD_SSP_MULTIPLIER": 0.85,
+    "scenario": "fsd_favorable",
+    "note": "Synthetic FSD-favorable assumed effects for methodology demo \u2014 not real Cortex/fleet data."
   }
 }

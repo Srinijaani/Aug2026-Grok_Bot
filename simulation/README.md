@@ -26,8 +26,10 @@ Open `simulation/output/report.html` in a browser.
 
 ## Scenario knobs (in `fsd_tire_wear_sim.py`)
 
-- `FSD_NTWR_MULTIPLIER = 1.12` (+12% mean wear on FSD miles)
-- Rear bias, higher WAI / LSD / SSP, lower LAI (smoother longitudinal)
+Current run is an **FSD-favorable** inversion:
+
+- `FSD_NTWR_MULTIPLIER = 0.88` (−12% mean wear on FSD miles)
+- Lower rear scrub, WAI / LSD / SSP; lower LAI (smoother longitudinal)
 
 ## KPIs
 

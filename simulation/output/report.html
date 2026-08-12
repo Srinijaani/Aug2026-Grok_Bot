@@ -86,34 +86,36 @@
   <div class="warn">
     <strong>Not real fleet data.</strong> All inputs are synthetic dummy data generated for methodology
     demonstration. No Cortex, Tesla telemetry, or field measurements were used.
-    Assumed FSD NTWR multiplier = 1.12.
+    Assumed FSD NTWR multiplier = 0.88.
   </div>
 </header>
 <main>
   <div class="cards"><div class="card"><div class="label">Vehicles</div><div class="value">10,000</div></div>
 <div class="card"><div class="label">FSD-capable</div><div class="value">6,194</div></div>
 <div class="card"><div class="label">Total miles</div><div class="value">144.8M</div></div>
-<div class="card"><div class="label">ΔNTWR (FSD)</div><div class="value">+12.2%</div></div>
-<div class="card"><div class="label">Δ Tire life</div><div class="value">-10.6%</div></div>
-<div class="card"><div class="label">Δ Tire cost / 1k mi</div><div class="value">+12.2%</div></div></div>
+<div class="card"><div class="label">ΔNTWR (FSD)</div><div class="value">-11.9%</div></div>
+<div class="card"><div class="label">Δ Tire life</div><div class="value">+13.8%</div></div>
+<div class="card"><div class="label">Δ Tire cost / 1k mi</div><div class="value">-11.9%</div></div></div>
 
   <h2>Executive summary</h2>
   <p>
     Among 6,194 FSD-capable vehicles, within-vehicle contrasts show FSD miles wearing
-    tread <strong>+12.2%</strong> faster than manual miles
-    (95% CI +12.0% to +12.3%).
-    Counterfactual tire life falls from
+    tread <strong>-11.9%</strong> versus manual miles
+    (95% CI -12.0% to -11.8%)
+    in this <em>FSD-favorable</em> synthetic scenario.
+    Counterfactual tire life moves from
     <strong>27.2k</strong> to
-    <strong>24.3k</strong> miles (-10.6%).
-    Rear/front NTWR ratio rises from 1.062 (manual) to
-    1.218 (FSD). Lateral dose and steering-slip proxies increase, while
-    longitudinal aggression falls — consistent with smoother throttle but higher cornering scrub.
+    <strong>30.9k</strong> miles (+13.8%).
+    Rear/front NTWR ratio is 1.062 (manual) vs
+    0.959 (FSD). Lateral dose, steering-slip, and asymmetry fall alongside
+    longitudinal aggression — consistent with smoother, lower-scrub FSD pathing.
   </p>
   <p>
-    Decision rule (≥15% NTWR premium):
+    Adverse-wear decision rule (≥15% NTWR premium for FSD):
     <strong>NOT HIT</strong>
     at the mean; ≥10% threshold:
-    <strong>HIT</strong>.
+    <strong>NOT HIT</strong>
+    (expected not to hit under an FSD-favorable assumption).
   </p>
 
   <h2>KPI results (FSD-capable, within-vehicle)</h2>
@@ -121,21 +123,21 @@
     <table>
       <thead><tr><th>KPI</th><th>Manual</th><th>FSD</th><th>Δ</th><th>p (paired t)</th></tr></thead>
       <tbody>
-        <tr><td>1 NTWR (mm/1k mi)</td><td>0.245</td><td>0.275</td><td>+12.2%</td><td>0.00e+00</td></tr>
-        <tr><td>2 Tire life (mi)</td><td>27,196</td><td>24,305</td><td>-10.6%</td><td>—</td></tr>
-        <tr><td>3 WAI</td><td>0.070</td><td>0.105</td><td>+0.035</td><td>0.00e+00</td></tr>
-        <tr><td>4 LSD (min/100 mi)</td><td>—</td><td>—</td><td>+17.9%</td><td>0.00e+00</td></tr>
-        <tr><td>5 LAI (events/100 mi)</td><td>—</td><td>—</td><td>-11.9%</td><td>0.00e+00</td></tr>
-        <tr><td>6 SSP</td><td>—</td><td>—</td><td>+15.0%</td><td>0.00e+00</td></tr>
-        <tr><td>8 TCI ($/1k mi)</td><td>$39.17</td><td>$43.92</td><td>+12.2%</td><td>—</td></tr>
+        <tr><td>1 NTWR (mm/1k mi)</td><td>0.245</td><td>0.216</td><td>-11.9%</td><td>0.00e+00</td></tr>
+        <tr><td>2 Tire life (mi)</td><td>27,196</td><td>30,933</td><td>+13.8%</td><td>—</td></tr>
+        <tr><td>3 WAI</td><td>0.070</td><td>0.045</td><td>-0.025</td><td>0.00e+00</td></tr>
+        <tr><td>4 LSD (min/100 mi)</td><td>—</td><td>—</td><td>-18.1%</td><td>0.00e+00</td></tr>
+        <tr><td>5 LAI (events/100 mi)</td><td>—</td><td>—</td><td>-21.9%</td><td>0.00e+00</td></tr>
+        <tr><td>6 SSP</td><td>—</td><td>—</td><td>-15.0%</td><td>0.00e+00</td></tr>
+        <tr><td>8 TCI ($/1k mi)</td><td>$39.17</td><td>$34.51</td><td>-11.9%</td><td>—</td></tr>
       </tbody>
     </table>
     <div>
       <h3>Interpretation</h3>
       <ul>
-        <li>Primary wear outcome (NTWR) is elevated under FSD in this synthetic scenario.</li>
-        <li>Mechanism mix: ↑ LSD / SSP / WAI / rear bias; ↓ LAI (smoother long. control).</li>
-        <li>Economics: tire cost intensity rises ~12.2% under pure-FSD counterfactual.</li>
+        <li>Primary wear outcome (NTWR) is <strong>lower</strong> under FSD in this FSD-favorable synthetic scenario.</li>
+        <li>Mechanism mix: ↓ LSD / SSP / WAI / rear scrub; ↓ LAI (smoother long. control).</li>
+        <li>Economics: tire cost intensity changes ~-11.9% under pure-FSD counterfactual.</li>
         <li>Texas heat (TPS) is modeled as a confounder shared across modes, stratified by metro/month.</li>
       </ul>
     </div>
@@ -154,18 +156,18 @@
   <h2>By Texas metro</h2>
   <table>
     <thead><tr><th>Metro</th><th>N</th><th>Blended NTWR</th><th>Mean FSD engagement</th><th>TPS hours</th></tr></thead>
-    <tbody><tr><td>Houston</td><td>2,685</td><td>0.265</td><td>24.9%</td><td>370</td></tr><tr><td>San Antonio</td><td>1,221</td><td>0.255</td><td>24.5%</td><td>339</td></tr><tr><td>DFW</td><td>3,206</td><td>0.250</td><td>24.5%</td><td>340</td></tr><tr><td>Austin</td><td>1,882</td><td>0.245</td><td>25.8%</td><td>339</td></tr><tr><td>Other TX</td><td>1,006</td><td>0.238</td><td>23.9%</td><td>339</td></tr></tbody>
+    <tbody><tr><td>Houston</td><td>2,685</td><td>0.249</td><td>24.9%</td><td>370</td></tr><tr><td>San Antonio</td><td>1,221</td><td>0.240</td><td>24.5%</td><td>339</td></tr><tr><td>DFW</td><td>3,206</td><td>0.236</td><td>24.5%</td><td>340</td></tr><tr><td>Austin</td><td>1,882</td><td>0.231</td><td>25.8%</td><td>339</td></tr><tr><td>Other TX</td><td>1,006</td><td>0.225</td><td>23.9%</td><td>339</td></tr></tbody>
   </table>
 
   <h2>By model</h2>
   <table>
     <thead><tr><th>Model</th><th>N</th><th>Blended NTWR</th><th>Life 100% Manual</th><th>Life 100% FSD</th></tr></thead>
-    <tbody><tr><td>Cybertruck</td><td>501</td><td>0.290</td><td>25.9k</td><td>23.2k</td></tr><tr><td>Model 3</td><td>3,502</td><td>0.245</td><td>27.2k</td><td>24.3k</td></tr><tr><td>Model S</td><td>787</td><td>0.259</td><td>27.4k</td><td>24.5k</td></tr><tr><td>Model X</td><td>666</td><td>0.264</td><td>26.8k</td><td>23.9k</td></tr><tr><td>Model Y</td><td>4,544</td><td>0.251</td><td>27.4k</td><td>24.5k</td></tr></tbody>
+    <tbody><tr><td>Cybertruck</td><td>501</td><td>0.272</td><td>25.9k</td><td>29.5k</td></tr><tr><td>Model 3</td><td>3,502</td><td>0.231</td><td>27.2k</td><td>31.0k</td></tr><tr><td>Model S</td><td>787</td><td>0.244</td><td>27.4k</td><td>31.2k</td></tr><tr><td>Model X</td><td>666</td><td>0.249</td><td>26.8k</td><td>30.5k</td></tr><tr><td>Model Y</td><td>4,544</td><td>0.237</td><td>27.4k</td><td>31.2k</td></tr></tbody>
   </table>
 </main>
 <footer>
   Generated by simulation/fsd_tire_wear_sim.py · seed=42 · year=2025 ·
-  Scenario params: {"FSD_NTWR_MULTIPLIER": 1.12, "FSD_REAR_BIAS": 1.08, "FSD_WAI_SHIFT": 0.035, "FSD_LSD_MULTIPLIER": 1.18, "FSD_LAI_MULTIPLIER": 0.88, "note": "Synthetic assumed effects for methodology demo \u2014 not real Cortex/fleet data."}
+  Scenario params: {"FSD_NTWR_MULTIPLIER": 0.88, "FSD_REAR_BIAS": 0.94, "FSD_WAI_SHIFT": -0.025, "FSD_LSD_MULTIPLIER": 0.82, "FSD_LAI_MULTIPLIER": 0.78, "FSD_SSP_MULTIPLIER": 0.85, "scenario": "fsd_favorable", "note": "Synthetic FSD-favorable assumed effects for methodology demo \u2014 not real Cortex/fleet data."}
 </footer>
 </body>
 </html>
