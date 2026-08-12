@@ -1,0 +1,11 @@
+{
+  "name": "Aug2026-Grok_Bot",
+  "install": "npm install",
+  "terminals": [
+    {
+      "name": "grok-bot-server",
+      "command": "npm start"
+    }
+  ],
+  "ports": [3000]
+}

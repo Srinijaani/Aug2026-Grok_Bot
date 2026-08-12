@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grok Bot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <div class="brand">
+          <span class="logo">✦</span>
+          <div>
+            <h1>Grok Bot</h1>
+            <p class="tagline">A chatbot powered by xAI Grok</p>
+          </div>
+        </div>
+        <span id="mode-badge" class="badge badge--muted">connecting…</span>
+      </header>
+
+      <main id="messages" class="messages" aria-live="polite">
+        <div class="message message--bot">
+          <div class="avatar">✦</div>
+          <div class="bubble">
+            Hi! I'm Grok Bot. Ask me anything to get started.
+          </div>
+        </div>
+      </main>
+
+      <form id="composer" class="composer" autocomplete="off">
+        <textarea
+          id="input"
+          class="input"
+          placeholder="Send a message…"
+          rows="1"
+          required
+        ></textarea>
+        <button id="send" type="submit" class="send" aria-label="Send message">
+          Send
+        </button>
+      </form>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
