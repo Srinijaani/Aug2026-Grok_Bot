@@ -96,10 +96,10 @@ export function createWrightFlyer() {
     rightProp,
     wilbur,
     update(dt, { spin = true, flightT = -1 } = {}) {
-      const spinRate = spin ? 18 : 0;
-      const boost = flightT >= 0 && flightT < 20 ? 1.6 : 1;
-      leftProp.rotation.z -= dt * spinRate * boost;
-      rightProp.rotation.z += dt * spinRate * boost;
+      const flying = flightT >= 0 && flightT < 20;
+      const spinRate = spin || flying ? (flying ? 16 : 3.2) : 0;
+      leftProp.rotation.z -= dt * spinRate;
+      rightProp.rotation.z += dt * spinRate;
     },
   };
 }
@@ -355,19 +355,24 @@ function addEngine(group, metal, darkMetal, wood) {
   const engine = new THREE.Group();
   engine.position.set(0.62, LOWER_Y + 0.28, 0.05);
 
-  const crank = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.22, 0.95), metal);
+  const brass = new THREE.MeshStandardMaterial({
+    color: 0xb08a4a,
+    roughness: 0.35,
+    metalness: 0.75,
+  });
+  const crank = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.24, 1.02), metal);
   engine.add(crank);
 
-  const cylGeo = new THREE.CylinderGeometry(0.07, 0.07, 0.2, 12);
+  const cylGeo = new THREE.CylinderGeometry(0.085, 0.09, 0.26, 12);
   for (let i = 0; i < 4; i++) {
-    const cyl = new THREE.Mesh(cylGeo, darkMetal);
-    cyl.position.set(0.16, 0.12, -0.36 + i * 0.24);
+    const cyl = new THREE.Mesh(cylGeo, brass);
+    cyl.position.set(0.2, 0.16, -0.38 + i * 0.25);
     engine.add(cyl);
     const head = new THREE.Mesh(
-      new THREE.BoxGeometry(0.12, 0.05, 0.12),
-      metal
+      new THREE.BoxGeometry(0.16, 0.06, 0.16),
+      darkMetal
     );
-    head.position.set(0.16, 0.24, -0.36 + i * 0.24);
+    head.position.set(0.2, 0.31, -0.38 + i * 0.25);
     engine.add(head);
   }
 
@@ -407,18 +412,24 @@ function addEngine(group, metal, darkMetal, wood) {
 }
 
 function addPropellers(group, wood, hubMat) {
+  const bladeMat = wood.clone();
+  bladeMat.color.set(0xe6c48a);
+  bladeMat.roughness = 0.45;
+  bladeMat.metalness = 0.04;
+  bladeMat.side = THREE.DoubleSide;
+
   const makeProp = (x) => {
     const prop = new THREE.Group();
     prop.position.set(x, LOWER_Y + GAP * 0.5, -1.22);
     const hub = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.07, 0.07, 0.1, 12),
+      new THREE.CylinderGeometry(0.08, 0.08, 0.12, 12),
       hubMat
     );
     hub.rotation.x = Math.PI / 2;
     prop.add(hub);
     const bladeGeo = createBladeGeometry();
-    const b1 = new THREE.Mesh(bladeGeo, wood);
-    const b2 = new THREE.Mesh(bladeGeo, wood);
+    const b1 = new THREE.Mesh(bladeGeo, bladeMat);
+    const b2 = new THREE.Mesh(bladeGeo, bladeMat);
     b2.rotation.z = Math.PI;
     prop.add(b1, b2);
     group.add(prop);
@@ -429,51 +440,20 @@ function addPropellers(group, wood, hubMat) {
 }
 
 function createBladeGeometry() {
-  const length = 1.28;
-  const segs = 18;
-  const positions = [];
-  const indices = [];
-  const uvs = [];
-
-  for (let i = 0; i <= segs; i++) {
-    const t = i / segs;
-    const y = 0.08 + t * length;
-    const width = 0.045 + Math.sin(t * Math.PI) * 0.155;
-    const thick = 0.026 * (1 - t * 0.5);
-    const twist = -0.15 + t * 0.85;
-    const cos = Math.cos(twist);
-    const sin = Math.sin(twist);
-    const corners = [
-      [-width, thick],
-      [width, thick],
-      [width, -thick],
-      [-width, -thick],
-    ];
-    for (const [u, v] of corners) {
-      const x = u * cos - v * sin;
-      const z = u * sin + v * cos;
-      positions.push(x, y, z);
-      uvs.push(t, width > 0 ? (u + width) / (width * 2) : 0.5);
-    }
+  const geo = new THREE.BoxGeometry(0.28, 1.26, 0.04, 1, 20, 1);
+  geo.translate(0, 0.72, 0);
+  const pos = geo.attributes.position;
+  for (let i = 0; i < pos.count; i++) {
+    const y = pos.getY(i);
+    const t = THREE.MathUtils.clamp((y - 0.08) / 1.26, 0, 1);
+    const taper = 0.35 + Math.sin(t * Math.PI) * 0.75;
+    const twist = t * 0.65;
+    const x = pos.getX(i) * taper;
+    const z = pos.getZ(i) * (1 - t * 0.35);
+    const c = Math.cos(twist);
+    const s = Math.sin(twist);
+    pos.setXYZ(i, x * c - z * s, y, x * s + z * c);
   }
-
-  for (let i = 0; i < segs; i++) {
-    const a = i * 4;
-    const b = a + 4;
-    // +Y face (0-1)
-    indices.push(a, a + 1, b + 1, a, b + 1, b);
-    // +Z-ish (1-2)
-    indices.push(a + 1, a + 2, b + 2, a + 1, b + 2, b + 1);
-    // -Y (2-3)
-    indices.push(a + 2, a + 3, b + 3, a + 2, b + 3, b + 2);
-    // -Z-ish (3-0)
-    indices.push(a + 3, a, b, a + 3, b, b + 3);
-  }
-
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
-  geo.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
-  geo.setIndex(indices);
   geo.computeVertexNormals();
   return geo;
 }

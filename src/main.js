@@ -50,6 +50,7 @@ let flightT = -1;
 const followOffset = new THREE.Vector3(7.5, 3.2, 6.5);
 const followLook = new THREE.Vector3();
 const camScratch = new THREE.Vector3();
+const chasePos = new THREE.Vector3();
 
 flightBtn.addEventListener("click", () => {
   if (flightT >= 0) {
@@ -61,7 +62,9 @@ flightBtn.addEventListener("click", () => {
 
 function startFlight() {
   flightT = 0;
+  intro = 99;
   controls.autoRotate = false;
+  followToggle.checked = true;
   flightBtn.textContent = "Reset";
   flightBtn.classList.add("active");
   caption.classList.remove("hidden");
@@ -179,11 +182,20 @@ function animate() {
   });
   animateWilbur(flightT);
 
-  if (followToggle.checked && flightT >= 0) {
-    camScratch.copy(flyer.group.position).add(new THREE.Vector3(0, 1.5, 0));
-    camera.position.lerp(camScratch.clone().add(followOffset), 1 - Math.pow(0.001, dt));
-    followLook.lerp(camScratch, 1 - Math.pow(0.001, dt));
+  if (flightT >= 0) {
+    camScratch.set(
+      flyer.group.position.x,
+      flyer.group.position.y + 1.5,
+      flyer.group.position.z
+    );
+    followLook.lerp(camScratch, 1 - Math.pow(0.02, dt));
     controls.target.copy(followLook);
+    if (followToggle.checked) {
+      camera.position.lerp(
+        camScratch.clone().add(followOffset),
+        1 - Math.pow(0.04, dt)
+      );
+    }
   }
 
   controls.update();
