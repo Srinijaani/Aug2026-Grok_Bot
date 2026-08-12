@@ -9,20 +9,22 @@ Simulates **10,000 Tesla vehicles** over **1 year** in Texas and estimates tire 
 ```bash
 pip install -r simulation/requirements.txt
 python simulation/fsd_tire_wear_sim.py
+python simulation/global_fsd_tire_impact.py
 ```
 
-Open `simulation/output/report.html` in a browser.
+Open:
+- `simulation/output/report.html` — Texas fleet KPI report
+- `simulation/output/global_impact_report.html` — global money + environment extrapolation
 
 ## Outputs
 
 | File | Description |
 | ---- | ----------- |
-| `output/report.html` | Visual report + KPI tables |
-| `output/summary.json` | Machine-readable results |
+| `output/report.html` | Visual Texas KPI report |
+| `output/global_impact_report.html` | Global tire $ savings + environmental impact |
+| `output/summary.json` / `output/global_impact.json` | Machine-readable results |
 | `output/fleet_year.csv` | 10,000 vehicle-year records |
-| `output/paired_mode_kpis.csv` | Within-vehicle Manual vs FSD rows |
-| `output/monthly_sample_2000.csv` | Monthly blocks for 2,000-vehicle sample |
-| `output/figures/*.png` | Charts |
+| `output/figures/*.png` / `output/figures_global/*.png` | Charts |
 
 ## Scenario knobs (in `fsd_tire_wear_sim.py`)
 

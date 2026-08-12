@@ -1,0 +1,50 @@
+{
+  "assumptions": {
+    "global_deliveries_cum": 9700000,
+    "on_road_retention": 0.82,
+    "on_road_fleet": 7953999,
+    "fsd_active_subs": 1480000,
+    "non_fsd_on_road": 6473999,
+    "global_mean_annual_miles": 11500,
+    "mean_fsd_engagement": 0.40013979309193837,
+    "avg_tire_set_usd": 1050,
+    "ntwr_manual": 0.24542149939815078,
+    "ntwr_fsd": 0.2162449853589542,
+    "wear_reduction_on_fsd_miles": 0.1188832849230666,
+    "tci_save_usd_per_1k_mi": 4.663885444456291,
+    "life_manual_mi": 27195.583244839898,
+    "life_fsd_mi": 30933.272937807837,
+    "kg_co2e_per_tire_cradle": 45.0,
+    "scenario": "fsd_favorable",
+    "disclaimer": "Illustrative extrapolation of synthetic FSD-favorable KPIs onto public fleet counts. Not real measured savings."
+  },
+  "annual": {
+    "fsd_miles": 6810379278.424791,
+    "manual_miles_on_fsd_cars": 10209620721.575209,
+    "fleet_miles": 91470988500,
+    "usd_saved_tci_method": 31762828.78787212,
+    "usd_saved_sets_method": 31611861.054647744,
+    "usd_per_fsd_owner": 21.461370802616297,
+    "sets_deferred": 30106.534337759756,
+    "tires_deferred": 120426.13735103903,
+    "twp_avoided_tonnes": 152.52107964640837,
+    "co2e_avoided_tonnes_mfg": 5419.176180796757,
+    "rubber_compound_avoided_tonnes": 1083.835236159351,
+    "tree_years_equiv": 258056.00860936934,
+    "ice_car_years_equiv": 1178.0817784340775
+  },
+  "lifetime_8yr": {
+    "usd_saved_tci_method": 254102630.30297697,
+    "sets_deferred": 240852.27470207805,
+    "tires_deferred": 963409.0988083122,
+    "co2e_avoided_tonnes_mfg": 43353.409446374055,
+    "twp_avoided_tonnes": 1220.168637171267
+  },
+  "what_if_full_fleet_same_engagement": {
+    "fsd_miles": 36601182412.30508,
+    "usd_saved_yr": 170703721.90263924,
+    "sets_deferred_yr": 161802.25947027488,
+    "co2e_avoided_tonnes_yr": 29124.40670464948,
+    "twp_avoided_tonnes_yr": 819.6976452611166
+  }
+}
