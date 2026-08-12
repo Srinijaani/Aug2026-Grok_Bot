@@ -42,24 +42,34 @@ class ScrapedItem:
         return asdict(self)
 
 
+_SPONSOR_MARKERS = (
+    "Subscribe and watch",
+    "Check out Plaud",
+    "Go to https://",
+    "Go to http://",
+    "Use code ",
+    "use code ",
+    "using my code",
+    "Get an exclusive",
+    "Sponsored by",
+    "Thanks to ",
+    "thanks to our sponsor",
+)
+
+
 def _clean_text(value: str | None, limit: int = 600) -> str:
     if not value:
         return ""
     text = re.sub(r"<[^>]+>", " ", value)
     text = re.sub(r"\s+", " ", text).strip()
     # Drop common YouTube sponsorship / CTA tails that pollute summaries.
-    for marker in (
-        "Subscribe and watch",
-        "Check out Plaud",
-        "Go to https://",
-        "Use code ",
-        "use code ",
-        "Get an exclusive",
-        "Sponsored by",
-    ):
-        idx = text.find(marker)
-        if idx > 40:
-            text = text[:idx].rstrip(" -|•")
+    lower = text.lower()
+    for marker in _SPONSOR_MARKERS:
+        idx = lower.find(marker.lower())
+        if idx == 0:
+            return ""
+        if idx > 0:
+            text = text[:idx].rstrip(" -|•:,")
             break
     return text[:limit]
 

@@ -59,13 +59,26 @@ def _score(text: str, keywords: tuple[str, ...]) -> int:
 def _shorten(title: str, summary: str, max_len: int = 160) -> str:
     base = title.strip()
     extra = summary.strip()
+    sponsor_markers = (
+        "subscribe and watch",
+        "check out plaud",
+        "go to https://",
+        "go to http://",
+        "use code ",
+        "using my code",
+        "get an exclusive",
+        "sponsored by",
+    )
+    if extra and any(m in extra.lower() for m in sponsor_markers):
+        extra = ""
     if extra and extra.lower() not in base.lower():
         # Prefer a concise clause from the summary when title is terse.
         clause = re.split(r"(?<=[.!?])\s+", extra)[0]
         if 40 < len(clause) < 220 and clause.lower() != base.lower():
-            candidate = f"{base} — {clause}"
-            if len(candidate) <= max_len + 40:
-                base = candidate
+            if not any(m in clause.lower() for m in sponsor_markers):
+                candidate = f"{base} — {clause}"
+                if len(candidate) <= max_len + 40:
+                    base = candidate
     base = re.sub(r"\s+", " ", base).strip()
     if len(base) > max_len:
         return base[: max_len - 1].rstrip() + "…"
