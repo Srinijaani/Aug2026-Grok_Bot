@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Global FSD Tire Savings & Environmental Impact (Extrapolated)</title>
+<style>
+  :root {
+    --ink:#142017; --muted:#5a665c; --paper:#eef3ea; --card:#fbfef9;
+    --line:#cfd9cc; --accent:#2f6f4e; --warm:#c45c26; --blue:#1f4e79;
+  }
+  body {
+    margin:0; font-family:"Source Serif 4", "Iowan Old Style", Georgia, serif;
+    color:var(--ink);
+    background:
+      radial-gradient(900px 500px at 0% 0%, #d7e8d7 0%, transparent 55%),
+      radial-gradient(800px 480px at 100% 10%, #e8dfd2 0%, transparent 50%),
+      var(--paper);
+    line-height:1.45;
+  }
+  header { padding:48px 7vw 22px; border-bottom:1px solid var(--line); }
+  .eyebrow {
+    font-family:ui-sans-serif,system-ui,sans-serif; text-transform:uppercase;
+    letter-spacing:.14em; font-size:12px; color:var(--accent); margin:0 0 10px;
+  }
+  h1 { font-size:clamp(28px,4vw,44px); margin:0 0 12px; max-width:18ch; }
+  .sub { max-width:70ch; color:var(--muted); font-size:17px; }
+  .warn {
+    margin-top:16px; max-width:85ch; padding:12px 14px; background:#fff6e8;
+    border-left:4px solid var(--warm);
+    font-family:ui-sans-serif,system-ui,sans-serif; font-size:13.5px;
+  }
+  main { padding:28px 7vw 64px; }
+  .cards {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:12px; margin-bottom:28px;
+  }
+  .card { background:var(--card); border:1px solid var(--line); padding:14px 16px; }
+  .label {
+    font-family:ui-sans-serif,system-ui,sans-serif; font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--muted);
+  }
+  .value { font-size:26px; margin-top:6px; font-weight:650; }
+  h2 { margin:34px 0 10px; font-size:24px; }
+  h3 { margin:20px 0 8px; font-size:18px; }
+  p,li { font-size:15.5px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px; }
+  figure { margin:0; background:var(--card); border:1px solid var(--line); padding:10px; }
+  img { width:100%; display:block; }
+  figcaption {
+    font-family:ui-sans-serif,system-ui,sans-serif; font-size:12px; color:var(--muted); padding-top:8px;
+  }
+  table {
+    width:100%; border-collapse:collapse; background:var(--card);
+    font-family:ui-sans-serif,system-ui,sans-serif; font-size:13.5px;
+  }
+  th,td { border-bottom:1px solid var(--line); padding:10px 12px; text-align:left; }
+  th { font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+  .two { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px; }
+  footer {
+    border-top:1px solid var(--line); padding:18px 7vw 40px; color:var(--muted);
+    font-family:ui-sans-serif,system-ui,sans-serif; font-size:12px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <p class="eyebrow">Global extrapolation · FSD-favorable synthetic KPIs · 2026 anchors</p>
+  <h1>How FSD could save Tesla drivers money on tires</h1>
+  <p class="sub">
+    Scaling the FSD-favorable tire-wear simulation to the worldwide on-road Tesla fleet —
+    dollar savings for owners, deferred replacements, and environmental co-benefits.
+  </p>
+  <div class="warn">
+    <strong>Illustrative only.</strong> Wear deltas come from a synthetic scenario
+    (FSD NTWR −11.9% on FSD miles), then multiplied by public
+    fleet/FSD counts (~8.0M on-road, 1.48M FSD-active).
+    This is <em>not</em> Cortex data, audited Tesla economics, or a measured LCA.
+  </div>
+</header>
+<main>
+  <div class="cards"><div class="card"><div class="label">On-road Teslas</div><div class="value">8.0M</div></div>
+<div class="card"><div class="label">FSD-active cars</div><div class="value">1.48M</div></div>
+<div class="card"><div class="label">Annual tire $ saved</div><div class="value">$31.8M</div></div>
+<div class="card"><div class="label">$/FSD owner / yr</div><div class="value">$21</div></div>
+<div class="card"><div class="label">Tires deferred / yr</div><div class="value">120,426</div></div>
+<div class="card"><div class="label">Mfg CO₂e avoided / yr</div><div class="value">5,419 t</div></div></div>
+
+  <h2>Executive summary</h2>
+  <p>
+    If FSD miles wear tread 11.9% less than manual miles
+    (synthetic assumption), today’s ~1.48M FSD-active Teslas —
+    driving ~6.81B FSD miles/year at 40% engagement —
+    would save owners about <strong>$31.8M per year</strong>
+    (~<strong>$21</strong> per FSD owner), defer
+    <strong>120,426 tires</strong> of replacements, avoid roughly
+    <strong>5,419 tonnes CO₂e</strong> of tire manufacturing, and keep
+    ~<strong>153 tonnes</strong> of tire-wear particles out of air/soil/water
+    versus an all-manual counterfactual on those same miles.
+  </p>
+  <p>
+    Over an 8-year ownership horizon that compounds to ~<strong>$254.1M</strong>
+    and ~<strong>963,409</strong> tires deferred among current FSD users.
+    If the entire ~8.0M on-road fleet used FSD at the same engagement rate,
+    annual savings scale to ~<strong>$170.7M</strong>.
+  </p>
+
+  <h2>Money saved on tires</h2>
+  <div class="two">
+    <table>
+      <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>TCI savings on FSD miles</td><td>$4.66 / 1,000 mi</td></tr>
+        <tr><td>Annual FSD miles (global)</td><td>6.81 billion</td></tr>
+        <tr><td>Annual owner savings (TCI method)</td><td>$31.8M</td></tr>
+        <tr><td>Cross-check via deferred sets × $1,050</td><td>$31.6M</td></tr>
+        <tr><td>Average per FSD owner / year</td><td>$21</td></tr>
+        <tr><td>8-year cumulative (current FSD base)</td><td>$254.1M</td></tr>
+        <tr><td>What-if full on-road fleet / year</td><td>$170.7M</td></tr>
+      </tbody>
+    </table>
+    <div>
+      <h3>How the dollars are counted</h3>
+      <ul>
+        <li>Only <em>FSD-attributed miles</em> get the wear discount (engagement ≈ 40%).</li>
+        <li>Savings = FSD miles × (manual TCI − FSD TCI) from the synthetic KPI run.</li>
+        <li>Deferred-set cross-check converts avoided tread depth into equivalent full tire-set lives × $1,050.</li>
+        <li>Does <strong>not</strong> subtract FSD subscription cost — this is tire OPEX only.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Worldwide environmental impact</h2>
+  <div class="two">
+    <table>
+      <thead><tr><th>Impact pathway</th><th>Annual (FSD users)</th><th>8-year</th></tr></thead>
+      <tbody>
+        <tr><td>Replacement tires deferred</td><td>120,426</td><td>963,409</td></tr>
+        <tr><td>Tire sets deferred</td><td>30,107</td><td>240,852</td></tr>
+        <tr><td>Manufacturing CO₂e avoided</td><td>5,419 t</td><td>43,353 t</td></tr>
+        <tr><td>Tire wear particles avoided</td><td>153 t</td><td>1,220 t</td></tr>
+        <tr><td>Rubber compound demand avoided</td><td>1,084 t</td><td>8,671 t</td></tr>
+        <tr><td>Tree-year CO₂e equivalence (rough)</td><td>258,056</td><td>2,064,448</td></tr>
+      </tbody>
+    </table>
+    <div>
+      <h3>Why this matters environmentally</h3>
+      <ul>
+        <li><strong>Fewer replacements</strong> → less rubber, steel, carbon black, factory energy, and shipping.</li>
+        <li><strong>Less tire-wear dust</strong> → fewer microplastics and zinc-bearing particles to roads, stormwater, and air.</li>
+        <li><strong>Manufacturing CO₂e</strong> uses ~45 kg CO₂e/tire cradle-to-gate (order-of-magnitude LCA anchor).</li>
+        <li>Use-phase rolling-resistance energy is <em>not</em> re-modeled here; this report isolates tire wear / replacement effects.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Visuals</h2>
+  <div class="grid"><figure><img src="figures_global/g01_money_saved.png" alt="g01_money_saved.png"/><figcaption>g01_money_saved.png</figcaption></figure>
+<figure><img src="figures_global/g02_tires_deferred.png" alt="g02_tires_deferred.png"/><figcaption>g02_tires_deferred.png</figcaption></figure>
+<figure><img src="figures_global/g03_environment.png" alt="g03_environment.png"/><figcaption>g03_environment.png</figcaption></figure>
+<figure><img src="figures_global/g04_per_owner.png" alt="g04_per_owner.png"/><figcaption>g04_per_owner.png</figcaption></figure>
+<figure><img src="figures_global/g05_fleet_split.png" alt="g05_fleet_split.png"/><figcaption>g05_fleet_split.png</figcaption></figure></div>
+
+  <h2>Assumptions & sources</h2>
+  <table>
+    <thead><tr><th>Input</th><th>Value</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td>Cumulative Tesla deliveries</td><td>9,700,000</td><td>Public ~Q2 2026 press/filings context</td></tr>
+      <tr><td>On-road retention</td><td>82%</td><td>Assumption → 7,953,999 on-road</td></tr>
+      <tr><td>Active FSD subscriptions</td><td>1,480,000</td><td>Tesla Q2 2026 disclosed metric</td></tr>
+      <tr><td>Mean annual miles</td><td>11,500</td><td>Global blend assumption</td></tr>
+      <tr><td>FSD engagement</td><td>40.0%</td><td>From synthetic fleet summary</td></tr>
+      <tr><td>NTWR manual → FSD</td><td>0.245 → 0.216 mm/1k</td><td>Synthetic FSD-favorable KPI</td></tr>
+      <tr><td>Avg tire set price</td><td>$1,050</td><td>Blended EV performance set</td></tr>
+      <tr><td>CO₂e / tire (cradle)</td><td>45 kg</td><td>LCA order-of-magnitude</td></tr>
+    </tbody>
+  </table>
+</main>
+<footer>
+  Generated by simulation/global_fsd_tire_impact.py · reads simulation/output/summary.json ·
+  Illustrative extrapolation of synthetic FSD-favorable KPIs onto public fleet counts. Not real measured savings.
+</footer>
+</body>
+</html>
