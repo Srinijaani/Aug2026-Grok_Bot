@@ -13,7 +13,7 @@
   const GRAVITY = 0.72;
   const JUMP_V = -14.5;
   const MOVE_SPEED = 4.6;
-  const FIRE_COOLDOWN = 280;
+  const FIRE_COOLDOWN = 220;
   const MAX_HP = 3;
 
   const overlay = document.getElementById("overlay");
@@ -183,14 +183,15 @@
     const muzzleY = player.y + player.h * 0.42;
     projectiles.push({
       x: muzzleX,
-      y: muzzleY,
-      w: 36,
-      h: 22,
-      vx: player.facing * 11,
-      life: 1.6,
+      y: muzzleY - 8,
+      w: 56,
+      h: 34,
+      vx: player.facing * 8.5,
+      life: 2.2,
       spin: 0,
     });
-    spawnBurst(muzzleX, muzzleY, "#ffcc33", 6);
+    spawnBurst(muzzleX, muzzleY, "#ffcc33", 10);
+    spawnBurst(muzzleX, muzzleY, "#ff2200", 8);
   }
 
   function hurtPlayer() {
@@ -215,29 +216,37 @@
     if (player.invuln > 0) player.invuln -= dt;
     if (flash > 0) flash -= dt;
 
-    // Movement
+    // Movement (arrows / WASD)
     let moving = false;
     player.vx = 0;
-    if (keys.has("ArrowLeft") || keys.has("a") || keys.has("A")) {
+    if (keys.has("ArrowLeft") || keys.has("KeyA")) {
       player.vx = -MOVE_SPEED;
       player.facing = -1;
       moving = true;
     }
-    if (keys.has("ArrowRight") || keys.has("d") || keys.has("D")) {
+    if (keys.has("ArrowRight") || keys.has("KeyD")) {
       player.vx = MOVE_SPEED;
       player.facing = 1;
       moving = true;
     }
 
-    // Jump
-    if ((keys.has(" ") || keys.has("Space")) && player.onGround) {
+    // Jump (Space / W / Up)
+    if (
+      (keys.has("Space") || keys.has("KeyW") || keys.has("ArrowUp")) &&
+      player.onGround
+    ) {
       player.vy = JUMP_V;
       player.onGround = false;
       spawnBurst(player.x + player.w / 2, player.y + player.h, "#9dffb0", 5);
     }
 
-    // Shoot
-    if (keys.has("m") || keys.has("M")) {
+    // Shoot (X / Z / Ctrl — standard action keys)
+    if (
+      keys.has("KeyX") ||
+      keys.has("KeyZ") ||
+      keys.has("ControlLeft") ||
+      keys.has("ControlRight")
+    ) {
       tryShoot();
     }
 
@@ -472,34 +481,38 @@
     const sy = p.y;
     ctx.save();
     ctx.translate(sx + p.w / 2, sy + p.h / 2);
-    ctx.rotate(p.vx > 0 ? 0 : Math.PI);
-    // Procedural red-yellow fire layered over sprite
-    const grd = ctx.createRadialGradient(0, 0, 2, 0, 0, 20);
-    grd.addColorStop(0, "#fff6a0");
-    grd.addColorStop(0.35, "#ffcc22");
-    grd.addColorStop(0.7, "#ff3a10");
-    grd.addColorStop(1, "rgba(180,0,0,0)");
-    ctx.fillStyle = grd;
+    if (p.vx < 0) ctx.scale(-1, 1);
+
+    // Outer red glow
+    const glow = ctx.createRadialGradient(4, 0, 2, 4, 0, 36);
+    glow.addColorStop(0, "rgba(255,240,120,0.95)");
+    glow.addColorStop(0.35, "rgba(255,170,30,0.85)");
+    glow.addColorStop(0.65, "rgba(255,40,10,0.55)");
+    glow.addColorStop(1, "rgba(180,0,0,0)");
+    ctx.fillStyle = glow;
     ctx.beginPath();
-    ctx.ellipse(0, 0, 22, 14, 0, 0, Math.PI * 2);
+    ctx.ellipse(0, 0, 34, 22, 0, 0, Math.PI * 2);
     ctx.fill();
 
     if (sprites.fireball) {
-      ctx.globalCompositeOperation = "screen";
-      ctx.drawImage(sprites.fireball, -22, -14, 44, 28);
-      ctx.globalCompositeOperation = "source-over";
+      ctx.drawImage(sprites.fireball, -30, -18, 60, 36);
     }
 
-    // Flicker tongues
-    ctx.fillStyle = Math.random() > 0.5 ? "#ff2200" : "#ffe033";
-    for (let i = 0; i < 3; i++) {
-      const tx = -18 - i * 5 - Math.random() * 4;
-      const ty = (Math.random() - 0.5) * 12;
+    // Bright yellow core
+    ctx.fillStyle = "#ffe566";
+    ctx.beginPath();
+    ctx.ellipse(8, 0, 12, 8, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#ff2200";
+    for (let i = 0; i < 4; i++) {
+      const tx = -16 - i * 7 - Math.random() * 5;
+      const ty = (Math.random() - 0.5) * 16;
       ctx.beginPath();
-      ctx.moveTo(tx, ty);
-      ctx.lineTo(tx - 10, ty - 4);
-      ctx.lineTo(tx - 8, ty + 4);
+      ctx.moveTo(tx + 8, ty);
+      ctx.lineTo(tx - 12, ty - 6);
+      ctx.lineTo(tx - 8, ty + 6);
       ctx.fill();
+      ctx.fillStyle = i % 2 ? "#ffee33" : "#ff2200";
     }
     ctx.restore();
   }
@@ -570,7 +583,7 @@
     // Controls hint
     ctx.fillStyle = "rgba(255,255,255,0.55)";
     ctx.font = "7px 'Press Start 2P', monospace";
-    ctx.fillText("SPACE jump   M fire", 14, H - 14);
+    ctx.fillText("SPACE jump   X fire", 14, H - 14);
 
     if (flash > 0) {
       ctx.fillStyle = `rgba(255,40,40,${flash * 0.45})`;
@@ -615,14 +628,28 @@
     }
   }
 
-  // Input
+  // Input — use KeyboardEvent.code for layout-independent bindings
+  const CONTROL_CODES = new Set([
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowUp",
+    "Space",
+    "KeyA",
+    "KeyD",
+    "KeyW",
+    "KeyX",
+    "KeyZ",
+    "ControlLeft",
+    "ControlRight",
+  ]);
+
   window.addEventListener("keydown", (e) => {
-    if (["ArrowLeft", "ArrowRight", " ", "Space", "a", "A", "d", "D", "m", "M"].includes(e.key)) {
+    if (CONTROL_CODES.has(e.code) || e.code === "KeyP") {
       e.preventDefault();
     }
-    keys.add(e.key === " " ? " " : e.key);
+    keys.add(e.code);
 
-    if (e.key === "p" || e.key === "P") {
+    if (e.code === "KeyP") {
       if (state === "playing") {
         state = "paused";
         showPanel(pausePanel);
@@ -635,9 +662,7 @@
   });
 
   window.addEventListener("keyup", (e) => {
-    keys.delete(e.key);
-    if (e.key === " ") keys.delete(" ");
-    keys.delete("Space");
+    keys.delete(e.code);
   });
 
   document.getElementById("btn-start").addEventListener("click", startPlaying);

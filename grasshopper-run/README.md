@@ -17,8 +17,8 @@ Then visit `http://localhost:8080`.
 | Key | Action |
 |-----|--------|
 | ← → / A D | Move |
-| Space | Jump / hop |
-| M | Shoot red–yellow fire |
+| Space / W / ↑ | Jump |
+| X / Z / Ctrl | Shoot red–yellow fire |
 | P | Pause |
 
 ## Goal
