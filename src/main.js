@@ -191,10 +191,8 @@ function animate() {
     followLook.lerp(camScratch, 1 - Math.pow(0.02, dt));
     controls.target.copy(followLook);
     if (followToggle.checked) {
-      camera.position.lerp(
-        camScratch.clone().add(followOffset),
-        1 - Math.pow(0.04, dt)
-      );
+      chasePos.copy(camScratch).add(followOffset);
+      camera.position.lerp(chasePos, 1 - Math.pow(0.04, dt));
     }
   }
 

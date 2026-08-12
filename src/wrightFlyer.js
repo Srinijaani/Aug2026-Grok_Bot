@@ -17,6 +17,11 @@ const REAR_Z = -0.72;
 export function createWrightFlyer() {
   const group = new THREE.Group();
   const woodMap = createWoodTexture();
+  const spruceMap = createWoodTexture({
+    base: "#e2c48a",
+    grain: "130, 82, 36",
+    highlight: "255, 236, 196",
+  });
   const fabricMap = createFabricTexture();
   const metalMap = createMetalTexture();
 
@@ -25,6 +30,13 @@ export function createWrightFlyer() {
     color: 0xc4a06a,
     roughness: 0.72,
     metalness: 0.02,
+  });
+  const spruce = new THREE.MeshStandardMaterial({
+    map: spruceMap,
+    color: 0xffe6b8,
+    roughness: 0.42,
+    metalness: 0.05,
+    side: THREE.DoubleSide,
   });
   const darkWood = new THREE.MeshStandardMaterial({
     map: woodMap,
@@ -68,7 +80,7 @@ export function createWrightFlyer() {
   addRudders(group, fabric, wood, wirePositions);
   addSkids(group, darkWood);
   addEngine(group, metal, darkMetal, darkWood);
-  const props = addPropellers(group, wood, darkMetal);
+  const props = addPropellers(group, spruce, darkMetal);
   addChains(group, darkMetal);
   addPilot(group);
   const wilbur = createWilbur();
@@ -411,13 +423,7 @@ function addEngine(group, metal, darkMetal, wood) {
   group.add(engine);
 }
 
-function addPropellers(group, wood, hubMat) {
-  const bladeMat = wood.clone();
-  bladeMat.color.set(0xe6c48a);
-  bladeMat.roughness = 0.45;
-  bladeMat.metalness = 0.04;
-  bladeMat.side = THREE.DoubleSide;
-
+function addPropellers(group, bladeMat, hubMat) {
   const makeProp = (x) => {
     const prop = new THREE.Group();
     prop.position.set(x, LOWER_Y + GAP * 0.5, -1.22);

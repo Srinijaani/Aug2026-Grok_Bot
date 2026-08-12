@@ -19,17 +19,21 @@ function noise(ctx, size, alpha, scale = 1) {
   ctx.putImageData(image, 0, 0);
 }
 
-export function createWoodTexture() {
+export function createWoodTexture({
+  base = "#8a5a32",
+  grain = "42, 22, 8",
+  highlight = "210, 170, 110",
+} = {}) {
   const size = 512;
   const [canvas, ctx] = makeCanvas(size);
-  ctx.fillStyle = "#8a5a32";
+  ctx.fillStyle = base;
   ctx.fillRect(0, 0, size, size);
 
   for (let y = 0; y < size; y++) {
     const wobble =
       Math.sin(y * 0.11) * 10 + Math.sin(y * 0.37) * 5 + Math.sin(y * 0.02) * 18;
     const shade = 0.08 + ((y * 17) % 11) * 0.008;
-    ctx.strokeStyle = `rgba(42, 22, 8, ${shade})`;
+    ctx.strokeStyle = `rgba(${grain}, ${shade})`;
     ctx.lineWidth = 1.2;
     ctx.beginPath();
     ctx.moveTo(0, y);
@@ -39,7 +43,7 @@ export function createWoodTexture() {
 
   for (let i = 0; i < 18; i++) {
     const y = Math.random() * size;
-    ctx.strokeStyle = `rgba(210, 170, 110, ${0.04 + Math.random() * 0.05})`;
+    ctx.strokeStyle = `rgba(${highlight}, ${0.04 + Math.random() * 0.05})`;
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(0, y);
