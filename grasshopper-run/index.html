@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grasshopper Run — 32-Bit</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="shell">
+    <header>
+      <h1>GRASSHOPPER RUN</h1>
+      <p class="tag">32-BIT SIDE-SCROLLER</p>
+    </header>
+
+    <div id="game-wrap">
+      <canvas id="game" width="960" height="540" aria-label="Grasshopper Run game canvas"></canvas>
+      <div id="overlay" class="overlay">
+        <div class="panel" id="start-panel">
+          <h2>MISSION</h2>
+          <p>Reach the finish line <strong>10 screens</strong> ahead.</p>
+          <p>Defeat Stewie-styled ants with red-yellow fire.</p>
+          <ul class="controls">
+            <li><kbd>←</kbd><kbd>→</kbd> / <kbd>A</kbd><kbd>D</kbd> Move</li>
+            <li><kbd>SPACE</kbd> Jump / Hop</li>
+            <li><kbd>M</kbd> Shoot fire</li>
+            <li><kbd>P</kbd> Pause</li>
+          </ul>
+          <button id="btn-start" type="button">START RUN</button>
+        </div>
+        <div class="panel hidden" id="pause-panel">
+          <h2>PAUSED</h2>
+          <button id="btn-resume" type="button">RESUME</button>
+        </div>
+        <div class="panel hidden" id="win-panel">
+          <h2>FINISH!</h2>
+          <p id="win-stats"></p>
+          <button id="btn-again" type="button">PLAY AGAIN</button>
+        </div>
+        <div class="panel hidden" id="lose-panel">
+          <h2>DEFEATED</h2>
+          <p>The ants won this round.</p>
+          <button id="btn-retry" type="button">RETRY</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <span>Goal: finish line · 10 screen-widths</span>
+      <span>Enemies: Stewie ants</span>
+    </footer>
+  </div>
+  <script src="js/game.js"></script>
+</body>
+</html>
