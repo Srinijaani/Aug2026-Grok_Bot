@@ -1,0 +1,138 @@
+{
+  "n_vehicles": 10000,
+  "n_fsd_capable": 6194,
+  "mean_annual_miles": 14482.061074901858,
+  "mean_fsd_engagement_among_capable": 0.40013979309193837,
+  "total_miles": 144820610.74901858,
+  "total_fsd_miles": 35897063.61200482,
+  "total_manual_miles": 108923547.13701375,
+  "kpi": {
+    "ntwr_manual_mean": 0.24542149939815078,
+    "ntwr_fsd_mean": 0.27522089045685083,
+    "ntwr_delta_pct_mean": 12.156352065091584,
+    "ntwr_delta_pct_ci95": [
+      12.018770710549077,
+      12.293933419634092
+    ],
+    "rul_manual_mean_miles": 27195.583244839898,
+    "rul_fsd_mean_miles": 24304.714451134725,
+    "rul_delta_pct_mean": -10.623045403952798,
+    "wai_manual_mean": 0.07005431660129446,
+    "wai_fsd_mean": 0.10495355053292005,
+    "wai_delta_mean": 0.03489923393162557,
+    "lsd_delta_pct_mean": 17.864656367882105,
+    "lai_delta_pct_mean": -11.908985498622448,
+    "ssp_delta_pct_mean": 15.02269915350121,
+    "tci_manual_mean": 39.17095256525614,
+    "tci_fsd_mean": 43.91808542647254,
+    "tci_delta_pct_mean": 12.156352065091584,
+    "rear_front_ratio_manual": 1.0618556701030926,
+    "rear_front_ratio_fsd": 1.217872340425532,
+    "decision_rule_hit_15pct": false,
+    "decision_rule_hit_10pct": true
+  },
+  "tests": {
+    "ntwr": {
+      "t": 167.70265827016533,
+      "p": 0.0
+    },
+    "wai": {
+      "t": 275.3185251545246,
+      "p": 0.0
+    },
+    "lsd": {
+      "t": 130.00420447943958,
+      "p": 0.0
+    },
+    "lai": {
+      "t": -112.0890672408889,
+      "p": 0.0
+    },
+    "ssp": {
+      "t": 200.2500108627376,
+      "p": 0.0
+    }
+  },
+  "by_metro": [
+    {
+      "metro": "Austin",
+      "n": 1882,
+      "mean_ntwr_blended": 0.2452367416003996,
+      "mean_engagement": 0.2576117162732374,
+      "mean_tps": 339.00551775334606
+    },
+    {
+      "metro": "DFW",
+      "n": 3206,
+      "mean_ntwr_blended": 0.24995698675282263,
+      "mean_engagement": 0.24536946675711102,
+      "mean_tps": 339.82708750226476
+    },
+    {
+      "metro": "Houston",
+      "n": 2685,
+      "mean_ntwr_blended": 0.2648423684476368,
+      "mean_engagement": 0.248560279712928,
+      "mean_tps": 369.9408747157042
+    },
+    {
+      "metro": "Other TX",
+      "n": 1006,
+      "mean_ntwr_blended": 0.23796074716983856,
+      "mean_engagement": 0.2390220536087914,
+      "mean_tps": 338.75173395670447
+    },
+    {
+      "metro": "San Antonio",
+      "n": 1221,
+      "mean_ntwr_blended": 0.25463127508018313,
+      "mean_engagement": 0.24500047584134288,
+      "mean_tps": 338.8593075662122
+    }
+  ],
+  "by_model": [
+    {
+      "model": "Cybertruck",
+      "n": 501,
+      "mean_ntwr_blended": 0.2898321659839408,
+      "mean_life_manual": 25908.950165734175,
+      "mean_life_fsd": 23186.9045183282
+    },
+    {
+      "model": "Model 3",
+      "n": 3502,
+      "mean_ntwr_blended": 0.2448900347602359,
+      "mean_life_manual": 27233.13422138153,
+      "mean_life_fsd": 24329.385496375948
+    },
+    {
+      "model": "Model S",
+      "n": 787,
+      "mean_ntwr_blended": 0.25911570793690114,
+      "mean_life_manual": 27357.013265224607,
+      "mean_life_fsd": 24488.399986054355
+    },
+    {
+      "model": "Model X",
+      "n": 666,
+      "mean_ntwr_blended": 0.2644818830578484,
+      "mean_life_manual": 26802.16906844609,
+      "mean_life_fsd": 23936.570954481936
+    },
+    {
+      "model": "Model Y",
+      "n": 4544,
+      "mean_ntwr_blended": 0.2511912174027286,
+      "mean_life_manual": 27411.63212698407,
+      "mean_life_fsd": 24494.440249175663
+    }
+  ],
+  "scenario_params": {
+    "FSD_NTWR_MULTIPLIER": 1.12,
+    "FSD_REAR_BIAS": 1.08,
+    "FSD_WAI_SHIFT": 0.035,
+    "FSD_LSD_MULTIPLIER": 1.18,
+    "FSD_LAI_MULTIPLIER": 0.88,
+    "note": "Synthetic assumed effects for methodology demo \u2014 not real Cortex/fleet data."
+  }
+}
