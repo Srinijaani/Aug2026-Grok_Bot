@@ -172,8 +172,11 @@ def summarize(scrape_payload: dict[str, Any]) -> Briefing:
         "fab",
         "gpu",
         "ai accelerator",
-        "export control",
         "chips act",
+        "lithography",
+        "memory",
+        "dram",
+        "transistor",
     )
     geopolitics = _pick_top(combined, GEO_KEYWORDS, limit=6, require_any=chip_context)
     company_highlights = _pick_top(combined, COMPANY_KEYWORDS, limit=6)
