@@ -161,7 +161,16 @@
       font-family: "IBM Plex Mono", monospace; font-size: 10px; color: var(--faint);
       letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px;
     }
-    .swim-years { display: flex; justify-content: space-between; padding: 0 2px; }
+    .swim-years { position: relative; height: 16px; }
+    .swim-years span { position: absolute; transform: translateX(-50%); }
+    .swim-years span:first-child { transform: none; }
+    .year-grid {
+      position: absolute; inset: 0 10px 0 98px; pointer-events: none;
+    }
+    .year-grid i {
+      position: absolute; top: 28px; bottom: 8px; width: 1px;
+      background: rgba(42, 42, 49, 0.9);
+    }
     .lane { display: grid; grid-template-columns: 88px 1fr; min-height: 36px; align-items: center; }
     .lane + .lane { border-top: 1px solid rgba(42, 42, 49, 0.6); }
     .lane-name { font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
@@ -324,7 +333,7 @@
                 <td>Cursor stock options</td>
                 <td class="num">44,365,047</td>
                 <td class="num">$6.84B ntl.</td>
-                <td class="num">9.5%</td>
+                <td class="num">9.6%</td>
                 <td>Assumed as SpaceX options</td>
               </tr>
               <tr>
@@ -360,11 +369,10 @@
       <h2>Releases with time</h2>
       <p class="note">Major product, model, funding, and M&amp;A events plotted on a 2022–2026 axis. Hover a dot, or filter the list.</p>
       <div class="swim" id="swim">
+        <div class="year-grid" id="yearGrid"></div>
         <div class="swim-axis">
           <div></div>
-          <div class="swim-years">
-            <span>2022</span><span>2023</span><span>2024</span><span>2025</span><span>2026</span>
-          </div>
+          <div class="swim-years" id="swimYears"></div>
         </div>
         <div id="lanes"></div>
         <div class="tooltip" id="tip"></div>
@@ -472,6 +480,40 @@
 
     const usdB = (v) => (v >= 1e9 ? "$" + (v / 1e9).toFixed(v >= 1e10 ? 0 : 1) + "B" : "$" + (v / 1e6).toFixed(0) + "M");
 
+    const valueLabels = {
+      id: "valueLabels",
+      afterDatasetsDraw(chart) {
+        const { ctx } = chart;
+        const id = chart.canvas.id;
+        ctx.save();
+        ctx.font = "500 11px IBM Plex Mono";
+        ctx.fillStyle = "#f4f1ea";
+        ctx.textAlign = "center";
+        if (id === "multipleChart") {
+          chart.getDatasetMeta(0).data.forEach((bar, i) => {
+            const v = chart.data.datasets[0].data[i];
+            ctx.fillText(v + "×", bar.x, bar.y - 7);
+          });
+        }
+        if (id === "valuationChart" || id === "arrChart") {
+          const meta = chart.getDatasetMeta(0);
+          ctx.textAlign = "center";
+          if (id === "valuationChart") {
+            [4, 7].forEach((i) => {
+              const pt = meta.data[i];
+              ctx.fillText("$" + chart.data.datasets[0].data[i] + "B", pt.x, pt.y - 10);
+            });
+          } else {
+            const last = meta.data[meta.data.length - 1];
+            ctx.textAlign = "right";
+            ctx.fillText("$3.0B", last.x, last.y - 10);
+          }
+        }
+        ctx.restore();
+      }
+    };
+    Chart.register(valueLabels);
+
     new Chart(document.getElementById("valuationChart"), {
       type: "line",
       data: {
@@ -491,10 +533,11 @@
       },
       options: {
         responsive: true, maintainAspectRatio: false,
+        layout: { padding: { top: 18, right: 12 } },
         plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => " $" + c.parsed.y + "B" } } },
         scales: {
           x: { ticks: tick, grid: { display: false } },
-          y: { ticks: { ...tick, callback: (v) => "$" + v + "B" }, grid, beginAtZero: true }
+          y: { ticks: { ...tick, callback: (v) => "$" + v + "B" }, grid, beginAtZero: true, suggestedMax: 72 }
         }
       }
     });
@@ -513,10 +556,11 @@
       },
       options: {
         responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => " $" + c.parsed.y + "B ARR" } } },
+        layout: { padding: { top: 18, right: 12 } },
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => " " + usdB(c.parsed.y * 1e9) + " ARR" } } },
         scales: {
           x: { ticks: tick, grid: { display: false } },
-          y: { type: "logarithmic", ticks: { ...tick, callback: (v) => usdB(v * 1e9) }, grid }
+          y: { type: "logarithmic", min: 0.001, max: 5, ticks: { ...tick, callback: (v) => usdB(v * 1e9) }, grid }
         }
       }
     });
@@ -560,7 +604,7 @@
         labels: ["Late 24", "Nov 25", "Feb 26", "May 26"],
         datasets: [
           { label: "Enterprise", data: [25, 45, 60, 65], backgroundColor: "#ff6a1a", stack: "m", borderRadius: 4 },
-          { label: "Individual", data: [75, 55, 40, 35], backgroundColor: "#2a2a31", stack: "m", borderRadius: 4 }
+          { label: "Individual", data: [75, 55, 40, 35], backgroundColor: "#b7b1a6", stack: "m", borderRadius: 4 }
         ]
       },
       options: {
@@ -586,10 +630,11 @@
       },
       options: {
         responsive: true, maintainAspectRatio: false,
+        layout: { padding: { top: 22 } },
         plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => " " + c.parsed.y + "× ARR" } } },
         scales: {
           x: { ticks: tick, grid: { display: false } },
-          y: { type: "logarithmic", ticks: { ...tick, callback: (v) => v + "×" }, grid }
+          y: { type: "logarithmic", min: 10, max: 600, ticks: { ...tick, callback: (v) => v + "×" }, grid }
         }
       }
     });
@@ -681,6 +726,19 @@
     const lanesEl = document.getElementById("lanes");
     const tip = document.getElementById("tip");
     const swim = document.getElementById("swim");
+    const yearsEl = document.getElementById("swimYears");
+    const gridEl = document.getElementById("yearGrid");
+    [2022, 2023, 2024, 2025, 2026].forEach((y, i) => {
+      const pct = ((Date.parse(y + "-01-01") - T0) / (T1 - T0)) * 100;
+      const lab = document.createElement("span");
+      lab.textContent = y;
+      lab.style.left = pct + "%";
+      if (i === 0) lab.style.transform = "none";
+      yearsEl.appendChild(lab);
+      const line = document.createElement("i");
+      line.style.left = pct + "%";
+      gridEl.appendChild(line);
+    });
 
     LANES.forEach((lane) => {
       const row = document.createElement("div");
