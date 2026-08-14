@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cursor · Company dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #070708;
+      --bg-2: #101012;
+      --card: #141417;
+      --line: #2a2a31;
+      --text: #f4f1ea;
+      --muted: #9a958c;
+      --faint: #6b675f;
+      --accent: #ff6a1a;
+      --accent-2: #ffd2b8;
+      --teal: #7dd3c0;
+      --gold: #e4c98a;
+      --blue: #8ab4ff;
+      --rose: #f0a0a0;
+      --green: #b6e388;
+      --violet: #c4b0ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      min-height: 100vh;
+      background-image:
+        radial-gradient(1100px 480px at 8% -12%, rgba(255, 106, 26, 0.10), transparent 55%),
+        radial-gradient(900px 420px at 92% 0%, rgba(125, 211, 192, 0.06), transparent 50%);
+    }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 28px 24px 72px; }
+
+    nav.jump {
+      position: sticky; top: 0; z-index: 20;
+      display: flex; gap: 6px; flex-wrap: wrap;
+      padding: 10px 0 12px; margin: -8px 0 18px;
+      background: linear-gradient(180deg, rgba(7,7,8,0.96) 70%, transparent);
+      backdrop-filter: blur(8px);
+    }
+    nav.jump a {
+      color: var(--muted); text-decoration: none;
+      font-family: "IBM Plex Mono", monospace; font-size: 11px;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      border: 1px solid var(--line); border-radius: 99px; padding: 5px 10px;
+    }
+    nav.jump a:hover { color: var(--text); border-color: var(--muted); }
+
+    header.top {
+      display: flex; justify-content: space-between; gap: 24px; align-items: flex-end;
+      padding-bottom: 22px; border-bottom: 1px solid var(--line); margin-bottom: 22px;
+    }
+    .brand { display: flex; gap: 14px; align-items: center; }
+    .mark {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--text); color: #111; display: grid; place-items: center;
+      font-family: "Fraunces", serif; font-size: 24px;
+    }
+    h1 { font-family: "Fraunces", serif; font-size: 36px; font-weight: 500; letter-spacing: -0.03em; line-height: 1; }
+    .sub { color: var(--muted); margin-top: 10px; font-size: 14px; max-width: 68ch; line-height: 1.5; }
+    .meta { text-align: right; font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--muted); line-height: 1.75; }
+    .meta strong { color: var(--text); font-weight: 500; }
+    .pill {
+      display: inline-block; border: 1px solid rgba(255, 106, 26, 0.35);
+      background: rgba(255, 106, 26, 0.08);
+      padding: 3px 9px; border-radius: 99px; color: var(--accent-2);
+      font-size: 12px; margin-bottom: 10px;
+    }
+
+    .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 18px; }
+    .kpi {
+      background: linear-gradient(180deg, var(--card) 0%, #101012 100%);
+      border: 1px solid var(--line); border-radius: 14px; padding: 16px;
+    }
+    .kpi .label { font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
+    .kpi .value { font-family: "Fraunces", serif; font-size: 32px; margin: 8px 0 4px; letter-spacing: -0.03em; }
+    .kpi .hint { font-size: 12px; color: var(--muted); }
+    .kpi.accent { border-color: rgba(255, 106, 26, 0.45); background: linear-gradient(180deg, #24160f 0%, #141210 100%); }
+    .kpi.accent .value { color: var(--accent); }
+
+    .grid-2 { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 12px; margin-bottom: 12px; }
+    .grid-2.eq { grid-template-columns: 1fr 1fr; }
+    .card {
+      background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px;
+    }
+    .card h2 {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 4px;
+    }
+    .card p.note { font-size: 12px; color: var(--faint); margin-bottom: 12px; line-height: 1.45; }
+    .chart-box { position: relative; height: 280px; }
+    .chart-box.short { height: 220px; }
+
+    .tabs { display: flex; gap: 6px; margin: 8px 0 14px; flex-wrap: wrap; }
+    .tabs button {
+      background: transparent; color: var(--muted); border: 1px solid var(--line);
+      border-radius: 99px; padding: 6px 12px; font: 500 12px "IBM Plex Sans", sans-serif;
+      cursor: pointer;
+    }
+    .tabs button.on { background: var(--text); color: #111; border-color: var(--text); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th {
+      text-align: left; font-family: "IBM Plex Mono", monospace; font-size: 10px;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint);
+      font-weight: 500; padding: 8px 8px 8px 0; border-bottom: 1px solid var(--line);
+    }
+    td { padding: 9px 8px 9px 0; border-bottom: 1px solid rgba(42, 42, 49, 0.75); vertical-align: top; }
+    td.num, th.num { text-align: right; font-family: "IBM Plex Mono", monospace; font-size: 12px; }
+
+    .tag {
+      font-family: "IBM Plex Mono", monospace; font-size: 10px;
+      padding: 2px 6px; border-radius: 4px; text-transform: uppercase;
+    }
+    .tag.product { background: #1d2a28; color: var(--teal); }
+    .tag.model { background: #2a1d14; color: var(--accent-2); }
+    .tag.funding { background: #222018; color: var(--gold); }
+    .tag.ma { background: #241818; color: var(--rose); }
+    .tag.company { background: #1a1e28; color: var(--blue); }
+
+    .timeline { max-height: 560px; overflow: auto; padding-right: 6px; }
+    .t-row { display: grid; grid-template-columns: 92px 12px 1fr; gap: 10px; margin-bottom: 14px; }
+    .t-date { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--muted); padding-top: 2px; }
+    .t-rail { position: relative; }
+    .t-rail::before { content: ""; position: absolute; left: 4px; top: 8px; bottom: -22px; width: 1px; background: var(--line); }
+    .t-row:last-child .t-rail::before { display: none; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); margin-top: 5px; box-shadow: 0 0 0 3px rgba(255, 106, 26, 0.15); }
+    .t-title { font-size: 14px; font-weight: 600; margin-top: 3px; }
+    .t-detail { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.45; }
+
+    .legend { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+    .legend-row { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; }
+    .swatch { width: 9px; height: 9px; border-radius: 2px; display: inline-block; margin-right: 8px; }
+    .legend-row span.muted { color: var(--muted); font-family: "IBM Plex Mono", monospace; font-size: 12px; }
+
+    .split { display: grid; grid-template-columns: 220px 1fr; gap: 18px; align-items: center; }
+    .callout {
+      font-size: 12px; color: var(--muted); background: var(--bg-2);
+      border: 1px dashed var(--line); border-radius: 10px; padding: 10px 12px;
+      margin-top: 12px; line-height: 1.5;
+    }
+    .sources { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; font-size: 12px; }
+    .sources a { color: var(--accent-2); text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+    footer { margin-top: 22px; color: var(--faint); font-size: 11px; line-height: 1.6; }
+
+    .swim {
+      position: relative; border: 1px solid var(--line); border-radius: 12px;
+      background: #0e0e11; padding: 8px 10px 6px; margin-bottom: 14px; overflow: hidden;
+    }
+    .swim-axis {
+      display: grid; grid-template-columns: 88px 1fr;
+      font-family: "IBM Plex Mono", monospace; font-size: 10px; color: var(--faint);
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px;
+    }
+    .swim-years { position: relative; height: 16px; }
+    .swim-years span { position: absolute; transform: translateX(-50%); }
+    .swim-years span:first-child { transform: none; }
+    .year-grid {
+      position: absolute; inset: 0 10px 0 98px; pointer-events: none;
+    }
+    .year-grid i {
+      position: absolute; top: 28px; bottom: 8px; width: 1px;
+      background: rgba(42, 42, 49, 0.9);
+    }
+    .lane { display: grid; grid-template-columns: 88px 1fr; min-height: 36px; align-items: center; }
+    .lane + .lane { border-top: 1px solid rgba(42, 42, 49, 0.6); }
+    .lane-name { font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .lane-track { position: relative; height: 28px; }
+    .evt {
+      position: absolute; top: 7px; width: 11px; height: 11px; border-radius: 50%;
+      transform: translateX(-50%); cursor: pointer; border: 2px solid var(--bg);
+    }
+    .evt:hover, .evt:focus { transform: translateX(-50%) scale(1.35); outline: none; z-index: 2; }
+    .tooltip {
+      display: none; position: absolute; z-index: 5; max-width: 280px;
+      background: #1c1c22; border: 1px solid var(--line); color: var(--text);
+      font-size: 12px; padding: 8px 10px; border-radius: 8px; pointer-events: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .tooltip.on { display: block; }
+    .tooltip b { display: block; margin-bottom: 3px; }
+
+    @media (max-width: 1024px) {
+      .kpis, .grid-2, .grid-2.eq, .split, .sources { grid-template-columns: 1fr; }
+      header.top { flex-direction: column; align-items: flex-start; }
+      .meta { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="jump">
+      <a href="#kpis">Overview</a>
+      <a href="#valuation">Valuation</a>
+      <a href="#revenue">Revenue</a>
+      <a href="#headcount">Headcount</a>
+      <a href="#shares">Shares</a>
+      <a href="#releases">Releases</a>
+      <a href="#funding">Funding</a>
+    </nav>
+
+    <header class="top">
+      <div>
+        <div class="pill">SpaceXAI · wholly owned subsidiary</div>
+        <div class="brand">
+          <div class="mark">C</div>
+          <div>
+            <h1>Cursor company dashboard</h1>
+          </div>
+        </div>
+        <p class="sub">Anysphere, Inc. (Cursor) — valuation, ARR, headcount, product releases on a time axis, and the SpaceX merger share spread from the 14 Aug 2026 Form 8-K.</p>
+      </div>
+      <div class="meta">
+        <div><strong>As of</strong> 14 Aug 2026</div>
+        <div>NASDAQ: SPCX · implied deal VWAP $154.13</div>
+        <div>Legal: Anysphere, Inc. → SpaceX</div>
+        <div>HQ: San Francisco · Founded 2022</div>
+      </div>
+    </header>
+
+    <section class="kpis" id="kpis">
+      <article class="kpi accent">
+        <div class="label">Implied equity value</div>
+        <div class="value">$60B</div>
+        <div class="hint">All-stock merger close · 8-K</div>
+      </article>
+      <article class="kpi">
+        <div class="label">ARR (May 2026)</div>
+        <div class="value">$3.0B</div>
+        <div class="hint">Bloomberg · Sacra est. $4.0B</div>
+      </article>
+      <article class="kpi">
+        <div class="label">Headcount</div>
+        <div class="value">~300</div>
+        <div class="hint">~$10M ARR / employee</div>
+      </article>
+      <article class="kpi">
+        <div class="label">Primary capital</div>
+        <div class="value">$3.37B</div>
+        <div class="hint">Seed through Series D</div>
+      </article>
+      <article class="kpi">
+        <div class="label">SPCX shares issued</div>
+        <div class="value">391.0M</div>
+        <div class="hint">Stock + vested RSUs at close</div>
+      </article>
+    </section>
+
+    <section class="grid-2" id="valuation">
+      <article class="card">
+        <h2>Valuation over time</h2>
+        <p class="note">Post-money at each priced round, then the SpaceX option, announcement, and close at $60B.</p>
+        <div class="chart-box"><canvas id="valuationChart"></canvas></div>
+      </article>
+      <article class="card" id="revenue">
+        <h2>ARR over time</h2>
+        <p class="note">Disclosed and reported annualized recurring revenue. Logarithmic scale.</p>
+        <div class="chart-box"><canvas id="arrChart"></canvas></div>
+      </article>
+    </section>
+
+    <section class="grid-2" id="headcount">
+      <article class="card">
+        <h2>Headcount</h2>
+        <p class="note">Lean by design. Headcount jumped after Series C and stayed ~300 through close. Line is implied ARR per employee.</p>
+        <div class="chart-box"><canvas id="headcountChart"></canvas></div>
+      </article>
+      <article class="card">
+        <h2>Revenue mix</h2>
+        <p class="note">Enterprise share of ARR, compiled from Bloomberg / Sacra via Axis Intelligence.</p>
+        <div class="chart-box"><canvas id="mixChart"></canvas></div>
+      </article>
+    </section>
+
+    <section class="grid-2 eq" id="shares">
+      <article class="card">
+        <h2>Share holding spread</h2>
+        <p class="note">SpaceX Form 8-K, 14 Aug 2026. Common and preferred converted at $60.0B / 7-day SPCX VWAP.</p>
+        <div class="tabs" id="ownTabs">
+          <button class="on" data-view="merger">Merger consideration (8-K)</button>
+          <button data-view="cap">Pre-close mix (modeled)</button>
+        </div>
+        <div id="ownMerger">
+          <div class="split">
+            <div class="chart-box short"><canvas id="shareChart"></canvas></div>
+            <div>
+              <div class="legend" id="shareLegend"></div>
+              <p class="callout">Implied SPCX VWAP = $60.0B ÷ 389,289,254 Class A shares = <strong style="color:var(--text)">$154.13</strong>. Vested RSUs added 1,752,426 shares. Unvested RSUs and options were assumed, not issued at close. Option dollars are notional at VWAP; strikes were not disclosed.</p>
+            </div>
+          </div>
+          <table style="margin-top:14px">
+            <thead>
+              <tr>
+                <th>Instrument</th>
+                <th class="num">SPCX units</th>
+                <th class="num">$ at VWAP</th>
+                <th class="num">% of F.D.</th>
+                <th>Status at close</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Common + preferred stock</td>
+                <td class="num">389,289,254</td>
+                <td class="num">$60.00B</td>
+                <td class="num">83.8%</td>
+                <td>Issued Class A</td>
+              </tr>
+              <tr>
+                <td>Vested Cursor RSUs</td>
+                <td class="num">1,752,426</td>
+                <td class="num">$270M</td>
+                <td class="num">0.4%</td>
+                <td>Issued Class A (pre-withholding)</td>
+              </tr>
+              <tr>
+                <td>Unvested Cursor RSUs</td>
+                <td class="num">29,128,326</td>
+                <td class="num">$4.49B</td>
+                <td class="num">6.3%</td>
+                <td>Assumed as SpaceX RSUs</td>
+              </tr>
+              <tr>
+                <td>Cursor stock options</td>
+                <td class="num">44,365,047</td>
+                <td class="num">$6.84B ntl.</td>
+                <td class="num">9.6%</td>
+                <td>Assumed as SpaceX options</td>
+              </tr>
+              <tr>
+                <td><strong>Fully diluted</strong></td>
+                <td class="num"><strong>464,535,053</strong></td>
+                <td class="num">—</td>
+                <td class="num">100%</td>
+                <td>Issued + assumed awards</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="ownCap" hidden>
+          <div class="split">
+            <div class="chart-box short"><canvas id="capChart"></canvas></div>
+            <div>
+              <div class="legend" id="capLegend"></div>
+              <p class="callout">Dealroom’s public 2026 estimate (indicative). The 8-K implies <strong style="color:var(--text)">16.2% employee / award overhang</strong> on a fully diluted basis — higher than Dealroom’s 11% ESOP, because it includes unvested RSUs and options. Cursor itself is now 100% owned by SpaceX.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Revenue multiple</h2>
+        <p class="note">Post-money valuation ÷ ARR at each mark. Multiple compressed from ~400× at Series A to 20× at close.</p>
+        <div class="chart-box"><canvas id="multipleChart"></canvas></div>
+        <p class="callout">May 2026 ARR uses Bloomberg’s $3.0B. Sacra’s $4.0B estimate would put the close closer to 15×.</p>
+      </article>
+    </section>
+
+    <section class="card" id="releases" style="margin-bottom:12px">
+      <h2>Releases with time</h2>
+      <p class="note">Major product, model, funding, and M&amp;A events plotted on a 2022–2026 axis. Hover a dot, or filter the list.</p>
+      <div class="swim" id="swim">
+        <div class="year-grid" id="yearGrid"></div>
+        <div class="swim-axis">
+          <div></div>
+          <div class="swim-years" id="swimYears"></div>
+        </div>
+        <div id="lanes"></div>
+        <div class="tooltip" id="tip"></div>
+      </div>
+      <div class="tabs" id="relTabs">
+        <button class="on" data-kind="all">All</button>
+        <button data-kind="product">Product</button>
+        <button data-kind="model">Model</button>
+        <button data-kind="funding">Funding</button>
+        <button data-kind="ma">M&amp;A</button>
+      </div>
+      <div class="timeline" id="timeline"></div>
+    </section>
+
+    <section class="card" id="funding" style="margin-bottom:12px">
+      <h2>Funding rounds</h2>
+      <p class="note">Priced rounds only. The SpaceX transaction was an all-stock exchange, not a cash raise. Total primary capital: $3.373B.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Round</th>
+            <th>Lead</th>
+            <th class="num">Raised</th>
+            <th class="num">Post-money</th>
+            <th class="num">ARR then</th>
+            <th class="num">Rev multiple</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Oct 2023</td><td>Seed</td><td>OpenAI Startup Fund</td><td class="num">$8M</td><td class="num">~$100M</td><td class="num">$1M</td><td class="num">~100×</td></tr>
+          <tr><td>Aug 2024</td><td>Series A</td><td>Andreessen Horowitz</td><td class="num">$60M</td><td class="num">$400M</td><td class="num">~$1M est.</td><td class="num">~400×</td></tr>
+          <tr><td>Dec 2024</td><td>Series B</td><td>Thrive Capital, a16z</td><td class="num">$105M</td><td class="num">$2.6B</td><td class="num">~$100M</td><td class="num">26×</td></tr>
+          <tr><td>Jun 2025</td><td>Series C</td><td>Thrive Capital</td><td class="num">$900M</td><td class="num">$9.9B</td><td class="num">$500M</td><td class="num">19.8×</td></tr>
+          <tr><td>Nov 2025</td><td>Series D</td><td>Accel, Coatue</td><td class="num">$2.3B</td><td class="num">$29.3B</td><td class="num">$1.0B</td><td class="num">29.3×</td></tr>
+          <tr><td>Aug 2026</td><td>SpaceX merger</td><td>SpaceX / SpaceXAI</td><td class="num">Stock</td><td class="num">$60.0B</td><td class="num">$3.0B</td><td class="num">20×</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Sources</h2>
+      <p class="note">Estimates and reconstructions are labeled. ARR of $4B (May 2026) is Sacra, not Anysphere; this dashboard uses Bloomberg’s $3B as the last reported rate.</p>
+      <div class="sources">
+        <a href="https://www.sec.gov/Archives/edgar/data/1181412/000162828026056945/spcx-20260814.htm">SpaceX Form 8-K · 14 Aug 2026</a>
+        <a href="https://en.wikipedia.org/wiki/Cursor_(company)">Wikipedia · Cursor (company)</a>
+        <a href="https://cursor.com/changelog">Cursor changelog</a>
+        <a href="https://cursor.com/changelog/2-0">Cursor 2.0 + Composer</a>
+        <a href="https://cursor.com/changelog/3-0">Cursor 3</a>
+        <a href="https://cursor.com/changelog/composer-2-5">Composer 2.5</a>
+        <a href="https://dealroom.co/companies/anysphere-cursor/">Dealroom · indicative cap table</a>
+        <a href="https://axis-intelligence.com/cursor-ai-statistics/">Axis Intelligence · Cursor stats 2026</a>
+      </div>
+    </section>
+
+    <footer>
+      Not an official Anysphere or SpaceX product. Compiled for briefing from public SEC filings, company changelogs, and press. Headcount and pre-close investor percentages other than 8-K award conversions are approximate. Option dollar values are notional at deal VWAP and ignore strike prices. Series B ARR is aligned to the January 2025 $100M disclosure.
+    </footer>
+  </div>
+
+  <script>
+    const RELEASES = [
+      { date: "2022-01-15", title: "Anysphere founded", kind: "company", detail: "Michael Truell, Sualeh Asif, Aman Sanger, and Arvid Lunnemark incorporate in San Francisco while at MIT." },
+      { date: "2023-03-15", title: "Cursor editor launches", kind: "product", detail: "Public launch of the AI code editor, a VS Code fork." },
+      { date: "2023-10-11", title: "Seed · $8M · ~$100M · $1M ARR", kind: "funding", detail: "Led by OpenAI Startup Fund. Angels include Nat Friedman and Arash Ferdowsi." },
+      { date: "2024-08-15", title: "Series A · $60M · $400M", kind: "funding", detail: "Led by Andreessen Horowitz." },
+      { date: "2024-11-12", title: "Acquires Supermaven", kind: "ma", detail: "AI code-completion startup founded by Jacob Jackson. Standalone product wound down in late 2025." },
+      { date: "2024-12-17", title: "Cursor 0.44 · Agent + Yolo Mode", kind: "product", detail: "Agent runs terminal commands, edits in parallel, and Cursor Tab expands. Yolo Mode auto-runs commands." },
+      { date: "2024-12-20", title: "Series B · $105M · $2.6B", kind: "funding", detail: "Led by Thrive Capital and a16z." },
+      { date: "2025-01-15", title: "$100M ARR", kind: "funding", detail: "Fifteen months from $1M ARR — among the fastest B2B SaaS ramps on record." },
+      { date: "2025-02-19", title: "Cursor 0.46 · Agent is default", kind: "product", detail: "Chat, Composer, and Agent unify. UI refresh, auto web search, MCP project servers." },
+      { date: "2025-06-04", title: "Cursor 1.0 · Bugbot · Background Agent GA", kind: "product", detail: "Automatic GitHub PR review, one-click MCP install, Jupyter support, Background Agent for all users." },
+      { date: "2025-06-05", title: "Series C · $900M · $9.9B · $500M ARR", kind: "funding", detail: "Led by Thrive Capital." },
+      { date: "2025-06-30", title: "Agents on web and mobile", kind: "product", detail: "Coding agents leave the desktop IDE." },
+      { date: "2025-07-18", title: "Koala talent + Resourcely security hire", kind: "ma", detail: "Enterprise-readiness team from Koala; Travis McPeak joins to lead security." },
+      { date: "2025-08-07", title: "Cursor Agent CLI", kind: "product", detail: "Agent available from the command line." },
+      { date: "2025-10-29", title: "Cursor 2.0 + Composer", kind: "model", detail: "First in-house agentic coding model. Multi-agent interface via git worktrees. Browser for Agent goes GA." },
+      { date: "2025-11-13", title: "Series D · $2.3B · $29.3B · $1B ARR", kind: "funding", detail: "Co-led by Accel and Coatue. Google and NVIDIA participate." },
+      { date: "2025-12-19", title: "Acquires Graphite", kind: "ma", detail: "Code-review startup. Cash-and-equity deal reported well above Graphite’s $290M valuation." },
+      { date: "2026-02-15", title: "Cloud Agents · $2B ARR · Composer 1.5", kind: "product", detail: "Async remote agents. Bloomberg reports $2B ARR." },
+      { date: "2026-03-13", title: "Cursor in JetBrains (ACP)", kind: "product", detail: "Joins Agent Communication Protocol registry; live inside JetBrains IDEs." },
+      { date: "2026-03-19", title: "Composer 2", kind: "model", detail: "Frontier-level coding model at $0.50/M input. Trained from Kimi K2.5 + RL." },
+      { date: "2026-04-02", title: "Cursor 3", kind: "product", detail: "Agent-first rebuild; Agents Window, Design Mode, /worktree and /best-of-n. No longer a VS Code fork." },
+      { date: "2026-04-21", title: "SpaceX $60B option", kind: "funding", detail: "SpaceX can buy Cursor for $60B later in 2026, or pay $10B for joint work." },
+      { date: "2026-04-30", title: "Cursor SDK", kind: "product", detail: "Runtime, harness, and models that power the IDE, embeddable in other products." },
+      { date: "2026-05-18", title: "Composer 2.5 · $3B ARR", kind: "model", detail: "Long-horizon agentic gains. Bloomberg: $3B annual sales rate." },
+      { date: "2026-06-10", title: "Bugbot 90-second reviews", kind: "product", detail: "3× faster, 22% cheaper, 10% more bugs. /review before push. Powered by Composer 2.5." },
+      { date: "2026-06-16", title: "SpaceX acquisition announced", kind: "ma", detail: "All-stock merger agreement. Cursor to join SpaceXAI. Close expected Q3 2026." },
+      { date: "2026-07-22", title: "Cursor Router", kind: "model", detail: "Production-trained router: Intelligence / Balance / Cost. Powers Auto mode across desktop, web, iOS, CLI, SDK." },
+      { date: "2026-07-28", title: "Cursor Start (India)", kind: "product", detail: "₹649/mo local plan with UPI. Grok + Composer, cloud agents, iOS." },
+      { "date": "2026-07-29", title: "Cursor for iPad", kind: "product", detail: "iPad app on all paid plans. Inbox, full PR review, Apple Pencil markup." },
+      { date: "2026-08-03", title: "Google Workspace plugins", kind: "product", detail: "Agents read/write Gmail, Drive, and Calendar from Cursor." },
+      { date: "2026-08-13", title: "Cloud Agent Builds", kind: "product", detail: "Prebuilt environment snapshots. Internally 10× faster boots, 3× faster time-to-first-token." },
+      { date: "2026-08-14", title: "Merger close", kind: "ma", detail: "Cursor becomes a wholly owned SpaceX subsidiary. 389.3M SPCX Class A shares issued for common and preferred." }
+    ];
+
+    const KIND_COLOR = { product: "#7dd3c0", model: "#ff6a1a", funding: "#e4c98a", ma: "#f0a0a0", company: "#8ab4ff" };
+    const T0 = Date.parse("2022-01-01");
+    const T1 = Date.parse("2026-08-31");
+
+    const tick = { color: "#6b675f", font: { family: "IBM Plex Mono", size: 10 } };
+    const grid = { color: "rgba(42,42,49,0.7)" };
+    Chart.defaults.font.family = "IBM Plex Sans";
+    Chart.defaults.color = "#9a958c";
+
+    const usdB = (v) => (v >= 1e9 ? "$" + (v / 1e9).toFixed(v >= 1e10 ? 0 : 1) + "B" : "$" + (v / 1e6).toFixed(0) + "M");
+
+    const valueLabels = {
+      id: "valueLabels",
+      afterDatasetsDraw(chart) {
+        const { ctx } = chart;
+        const id = chart.canvas.id;
+        ctx.save();
+        ctx.font = "500 11px IBM Plex Mono";
+        ctx.fillStyle = "#f4f1ea";
+        ctx.textAlign = "center";
+        if (id === "multipleChart") {
+          chart.getDatasetMeta(0).data.forEach((bar, i) => {
+            const v = chart.data.datasets[0].data[i];
+            ctx.fillText(v + "×", bar.x, bar.y - 7);
+          });
+        }
+        if (id === "valuationChart" || id === "arrChart") {
+          const meta = chart.getDatasetMeta(0);
+          ctx.textAlign = "center";
+          if (id === "valuationChart") {
+            [4, 7].forEach((i) => {
+              const pt = meta.data[i];
+              ctx.fillText("$" + chart.data.datasets[0].data[i] + "B", pt.x, pt.y - 10);
+            });
+          } else {
+            const last = meta.data[meta.data.length - 1];
+            ctx.textAlign = "right";
+            ctx.fillText("$3.0B", last.x, last.y - 10);
+          }
+        }
+        ctx.restore();
+      }
+    };
+    Chart.register(valueLabels);
+
+    new Chart(document.getElementById("valuationChart"), {
+      type: "line",
+      data: {
+        labels: ["Oct 23", "Aug 24", "Dec 24", "Jun 25", "Nov 25", "Apr 26", "Jun 26", "Aug 26"],
+        datasets: [{
+          label: "Post-money",
+          data: [0.1, 0.4, 2.6, 9.9, 29.3, 60, 60, 60],
+          borderColor: "#ff6a1a",
+          backgroundColor: (ctx) => {
+            const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 280);
+            g.addColorStop(0, "rgba(255,106,26,0.28)");
+            g.addColorStop(1, "rgba(255,106,26,0)");
+            return g;
+          },
+          fill: true, tension: 0.25, pointRadius: 4, pointBackgroundColor: "#ff6a1a", borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        layout: { padding: { top: 18, right: 12 } },
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => " $" + c.parsed.y + "B" } } },
+        scales: {
+          x: { ticks: tick, grid: { display: false } },
+          y: { ticks: { ...tick, callback: (v) => "$" + v + "B" }, grid, beginAtZero: true, suggestedMax: 72 }
+        }
+      }
+    });
+
+    new Chart(document.getElementById("arrChart"), {
+      type: "line",
+      data: {
+        labels: ["Oct 23", "Jan 25", "Jun 25", "Nov 25", "Feb 26", "May 26"],
+        datasets: [{
+          label: "ARR",
+          data: [0.001, 0.1, 0.5, 1, 2, 3],
+          borderColor: "#7dd3c0",
+          backgroundColor: "rgba(125,211,192,0.12)",
+          fill: true, tension: 0.2, pointRadius: 4, pointBackgroundColor: "#7dd3c0", borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        layout: { padding: { top: 18, right: 12 } },
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => " " + usdB(c.parsed.y * 1e9) + " ARR" } } },
+        scales: {
+          x: { ticks: tick, grid: { display: false } },
+          y: { type: "logarithmic", min: 0.001, max: 5, ticks: { ...tick, callback: (v) => usdB(v * 1e9) }, grid }
+        }
+      }
+    });
+
+    new Chart(document.getElementById("headcountChart"), {
+      type: "bar",
+      data: {
+        labels: ["Jan 22", "Dec 24", "Mar 25", "Jun 25", "Aug 25", "Nov 25", "Aug 26"],
+        datasets: [
+          {
+            type: "bar",
+            label: "Employees",
+            data: [4, 40, 55, 182, 300, 300, 300],
+            backgroundColor: "#e4c98a",
+            borderRadius: 6, barPercentage: 0.55, yAxisID: "y"
+          },
+          {
+            type: "line",
+            label: "ARR / employee ($M)",
+            data: [null, 2.5, 1.8, 2.7, 3.3, 3.3, 10.0],
+            borderColor: "#ff6a1a",
+            pointBackgroundColor: "#ff6a1a",
+            pointRadius: 3, borderWidth: 2, tension: 0.25, yAxisID: "y1"
+          }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { labels: { boxWidth: 10, color: "#9a958c" } } },
+        scales: {
+          x: { ticks: tick, grid: { display: false } },
+          y: { ticks: tick, grid, beginAtZero: true, title: { display: true, text: "People", color: "#6b675f", font: { size: 10 } } },
+          y1: { position: "right", ticks: { ...tick, callback: (v) => "$" + v + "M" }, grid: { drawOnChartArea: false }, beginAtZero: true }
+        }
+      }
+    });
+
+    new Chart(document.getElementById("mixChart"), {
+      type: "bar",
+      data: {
+        labels: ["Late 24", "Nov 25", "Feb 26", "May 26"],
+        datasets: [
+          { label: "Enterprise", data: [25, 45, 60, 65], backgroundColor: "#ff6a1a", stack: "m", borderRadius: 4 },
+          { label: "Individual", data: [75, 55, 40, 35], backgroundColor: "#b7b1a6", stack: "m", borderRadius: 4 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { labels: { boxWidth: 10, color: "#9a958c" } } },
+        scales: {
+          x: { stacked: true, ticks: tick, grid: { display: false } },
+          y: { stacked: true, max: 100, ticks: { ...tick, callback: (v) => v + "%" }, grid }
+        }
+      }
+    });
+
+    new Chart(document.getElementById("multipleChart"), {
+      type: "bar",
+      data: {
+        labels: ["Seed", "A", "B", "C", "D", "Close"],
+        datasets: [{
+          label: "EV / ARR",
+          data: [100, 400, 26, 19.8, 29.3, 20],
+          backgroundColor: ["#2a2a31", "#3a2418", "#7dd3c0", "#7dd3c0", "#e4c98a", "#ff6a1a"],
+          borderRadius: 6, barPercentage: 0.65
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        layout: { padding: { top: 22 } },
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => " " + c.parsed.y + "× ARR" } } },
+        scales: {
+          x: { ticks: tick, grid: { display: false } },
+          y: { type: "logarithmic", min: 10, max: 600, ticks: { ...tick, callback: (v) => v + "×" }, grid }
+        }
+      }
+    });
+
+    const shareSlices = [
+      { label: "Common + preferred", value: 389289254, color: "#ff6a1a", usd: "$60.00B" },
+      { label: "Vested RSUs", value: 1752426, color: "#e4c98a", usd: "$270M" },
+      { label: "Unvested RSUs (assumed)", value: 29128326, color: "#7dd3c0", usd: "$4.49B" },
+      { label: "Options (assumed)", value: 44365047, color: "#8ab4ff", usd: "$6.84B ntl." }
+    ];
+    const shareTotal = shareSlices.reduce((s, x) => s + x.value, 0);
+
+    new Chart(document.getElementById("shareChart"), {
+      type: "doughnut",
+      data: {
+        labels: shareSlices.map((s) => s.label),
+        datasets: [{ data: shareSlices.map((s) => s.value), backgroundColor: shareSlices.map((s) => s.color), borderWidth: 0 }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, cutout: "68%", plugins: { legend: { display: false } } }
+    });
+    document.getElementById("shareLegend").innerHTML = shareSlices.map((s) =>
+      `<div class="legend-row"><div><span class="swatch" style="background:${s.color}"></span>${s.label}</div><span class="muted">${(s.value / shareTotal * 100).toFixed(1)}% · ${s.usd}</span></div>`
+    ).join("");
+
+    const capSlices = [
+      { label: "Founders (4)", pct: 19.5, color: "#ff6a1a" },
+      { label: "Thrive Capital", pct: 14.5, color: "#7dd3c0" },
+      { label: "a16z (Dealroom unlabeled)", pct: 11.0, color: "#8ab4ff" },
+      { label: "Employees / ESOP", pct: 11.0, color: "#e4c98a" },
+      { label: "Seed angels", pct: 11.0, color: "#b6e388" },
+      { label: "Other named funds", pct: 23.0, color: "#c4b0ff" },
+      { label: "Other / undisclosed", pct: 10.0, color: "#6b675f" }
+    ];
+    new Chart(document.getElementById("capChart"), {
+      type: "doughnut",
+      data: {
+        labels: capSlices.map((s) => s.label),
+        datasets: [{ data: capSlices.map((s) => s.pct), backgroundColor: capSlices.map((s) => s.color), borderWidth: 0 }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, cutout: "68%", plugins: { legend: { display: false } } }
+    });
+    document.getElementById("capLegend").innerHTML = capSlices.map((s) =>
+      `<div class="legend-row"><div><span class="swatch" style="background:${s.color}"></span>${s.label}</div><span class="muted">${s.pct.toFixed(1)}%</span></div>`
+    ).join("");
+
+    document.getElementById("ownTabs").addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      document.querySelectorAll("#ownTabs button").forEach((b) => b.classList.toggle("on", b === btn));
+      const view = btn.dataset.view;
+      document.getElementById("ownMerger").hidden = view !== "merger";
+      document.getElementById("ownCap").hidden = view !== "cap";
+    });
+
+    function fmtDate(iso) {
+      const [y, m, d] = iso.split("-");
+      return `${y}-${m}` + (d ? `-${d}` : "");
+    }
+
+    function renderTimeline(kind) {
+      const items = kind === "all"
+        ? RELEASES
+        : RELEASES.filter((r) => r.kind === kind || (kind === "product" && r.kind === "company"));
+      document.getElementById("timeline").innerHTML = items.map((r) => `
+        <div class="t-row">
+          <div class="t-date">${fmtDate(r.date)}</div>
+          <div class="t-rail"><div class="dot" style="background:${KIND_COLOR[r.kind]}"></div></div>
+          <div>
+            <span class="tag ${r.kind}">${r.kind}</span>
+            <div class="t-title">${r.title}</div>
+            <div class="t-detail">${r.detail}</div>
+          </div>
+        </div>`).join("");
+    }
+    renderTimeline("all");
+    document.getElementById("relTabs").addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      document.querySelectorAll("#relTabs button").forEach((b) => b.classList.toggle("on", b === btn));
+      renderTimeline(btn.dataset.kind);
+    });
+
+    const LANES = [
+      { id: "product", label: "Product" },
+      { id: "model", label: "Model" },
+      { id: "funding", label: "Funding" },
+      { id: "ma", label: "M&A" }
+    ];
+    const lanesEl = document.getElementById("lanes");
+    const tip = document.getElementById("tip");
+    const swim = document.getElementById("swim");
+    const yearsEl = document.getElementById("swimYears");
+    const gridEl = document.getElementById("yearGrid");
+    [2022, 2023, 2024, 2025, 2026].forEach((y, i) => {
+      const pct = ((Date.parse(y + "-01-01") - T0) / (T1 - T0)) * 100;
+      const lab = document.createElement("span");
+      lab.textContent = y;
+      lab.style.left = pct + "%";
+      if (i === 0) lab.style.transform = "none";
+      yearsEl.appendChild(lab);
+      const line = document.createElement("i");
+      line.style.left = pct + "%";
+      gridEl.appendChild(line);
+    });
+
+    LANES.forEach((lane) => {
+      const row = document.createElement("div");
+      row.className = "lane";
+      const events = RELEASES.filter((r) => r.kind === lane.id || (lane.id === "product" && r.kind === "company"));
+      row.innerHTML = `<div class="lane-name">${lane.label}</div><div class="lane-track" data-lane="${lane.id}"></div>`;
+      const track = row.querySelector(".lane-track");
+      events.forEach((r) => {
+        const pct = ((Date.parse(r.date) - T0) / (T1 - T0)) * 100;
+        const el = document.createElement("button");
+        el.className = "evt";
+        el.style.left = pct + "%";
+        el.style.background = KIND_COLOR[r.kind];
+        el.title = r.title;
+        el.setAttribute("aria-label", r.title);
+        el.addEventListener("mouseenter", (ev) => {
+          tip.className = "tooltip on";
+          tip.innerHTML = `<b>${r.title}</b>${fmtDate(r.date)} · ${r.kind}<br>${r.detail}`;
+          const rect = swim.getBoundingClientRect();
+          const x = ev.clientX - rect.left + 12;
+          const y = ev.clientY - rect.top + 14;
+          tip.style.left = Math.min(x, rect.width - 292) + "px";
+          tip.style.top = y + "px";
+        });
+        el.addEventListener("mouseleave", () => { tip.className = "tooltip"; });
+        track.appendChild(el);
+      });
+      lanesEl.appendChild(row);
+    });
+  </script>
+</body>
+</html>

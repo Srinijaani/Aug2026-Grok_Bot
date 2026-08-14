@@ -1,0 +1,127 @@
+{
+  "asOf": "2026-08-14",
+  "company": {
+    "legalName": "Anysphere, Inc.",
+    "tradeName": "Cursor",
+    "founded": "2022-01",
+    "hq": "San Francisco, California",
+    "founders": ["Michael Truell", "Sualeh Asif", "Aman Sanger", "Arvid Lunnemark"],
+    "ceo": "Michael Truell",
+    "parent": "SpaceX",
+    "unit": "SpaceXAI",
+    "status": "Wholly owned subsidiary of SpaceX (merger effective 14 Aug 2026)"
+  },
+  "kpis": {
+    "impliedEquityValueUsd": 60000000000,
+    "arrUsd": 3000000000,
+    "arrNote": "Bloomberg, 21 May 2026. Sacra has estimated ~$4.0B; this dashboard uses the Bloomberg figure Wikipedia cites.",
+    "headcount": 300,
+    "primaryCapitalUsd": 3373000000,
+    "spcxSharesIssued": 391041680
+  },
+  "valuation": [
+    { "date": "2023-10", "postMoneyUsd": 100000000, "round": "Seed", "raisedUsd": 8000000, "lead": "OpenAI Startup Fund", "arrUsd": 1000000 },
+    { "date": "2024-08", "postMoneyUsd": 400000000, "round": "Series A", "raisedUsd": 60000000, "lead": "Andreessen Horowitz", "arrUsd": 1000000 },
+    { "date": "2024-12", "postMoneyUsd": 2600000000, "round": "Series B", "raisedUsd": 105000000, "lead": "Thrive Capital, a16z", "arrUsd": 100000000 },
+    { "date": "2025-06", "postMoneyUsd": 9900000000, "round": "Series C", "raisedUsd": 900000000, "lead": "Thrive Capital", "arrUsd": 500000000 },
+    { "date": "2025-11", "postMoneyUsd": 29300000000, "round": "Series D", "raisedUsd": 2300000000, "lead": "Accel, Coatue", "arrUsd": 1000000000 },
+    { "date": "2026-04-21", "postMoneyUsd": 60000000000, "round": "SpaceX option", "raisedUsd": 0, "lead": "SpaceX", "arrUsd": 2000000000 },
+    { "date": "2026-06-16", "postMoneyUsd": 60000000000, "round": "Acquisition announced", "raisedUsd": 0, "lead": "SpaceX / SpaceXAI", "arrUsd": 3000000000 },
+    { "date": "2026-08-14", "postMoneyUsd": 60000000000, "round": "Merger close", "raisedUsd": 0, "lead": "SpaceX / SpaceXAI", "arrUsd": 3000000000 }
+  ],
+  "arr": [
+    { "date": "2023-10", "arrUsd": 1000000, "note": "At seed; ~15 months from $1M to $100M", "confidence": "disclosed" },
+    { "date": "2025-01", "arrUsd": 100000000, "note": "Company-disclosed", "confidence": "disclosed" },
+    { "date": "2025-06", "arrUsd": 500000000, "note": "Disclosed at Series C", "confidence": "disclosed" },
+    { "date": "2025-11", "arrUsd": 1000000000, "note": "Series D announcement", "confidence": "disclosed" },
+    { "date": "2026-02", "arrUsd": 2000000000, "note": "Bloomberg / The Information", "confidence": "reported" },
+    { "date": "2026-05", "arrUsd": 3000000000, "note": "Bloomberg, 21 May 2026", "confidence": "reported" }
+  ],
+  "arrAlt": [
+    { "date": "2026-05", "arrUsd": 4000000000, "note": "Sacra estimate — not a company disclosure", "confidence": "estimate" }
+  ],
+  "enterpriseMix": [
+    { "date": "2024-12", "enterprise": 0.25, "individual": 0.75 },
+    { "date": "2025-11", "enterprise": 0.45, "individual": 0.55 },
+    { "date": "2026-02", "enterprise": 0.60, "individual": 0.40 },
+    { "date": "2026-05", "enterprise": 0.65, "individual": 0.35 }
+  ],
+  "headcount": [
+    { "date": "2022-01", "employees": 4, "note": "Four MIT founders incorporate Anysphere", "confidence": "disclosed" },
+    { "date": "2024-12", "employees": 40, "note": "Team grew from 4 to 40+ through 2024", "confidence": "reported" },
+    { "date": "2025-03", "employees": 55, "note": "Press range ~40–60 in early 2025", "confidence": "reported" },
+    { "date": "2025-06", "employees": 182, "note": "Latka compiled figure", "confidence": "estimate" },
+    { "date": "2025-08", "employees": 300, "note": "The Verge / Wikipedia, Aug 2025", "confidence": "reported" },
+    { "date": "2025-11", "employees": 300, "note": "Series D coverage: ~300 employees", "confidence": "reported" },
+    { "date": "2026-08", "employees": 300, "note": "Still cited at ~300 at merger close", "confidence": "reported" }
+  ],
+  "releases": [
+    { "date": "2022-01-15", "title": "Anysphere founded", "kind": "company", "detail": "Michael Truell, Sualeh Asif, Aman Sanger, and Arvid Lunnemark incorporate in San Francisco while at MIT." },
+    { "date": "2023-03-15", "title": "Cursor editor launches", "kind": "product", "detail": "Public launch of the AI code editor, a VS Code fork." },
+    { "date": "2023-10-11", "title": "Seed · $8M · ~$100M · $1M ARR", "kind": "funding", "detail": "Led by OpenAI Startup Fund. Angels include Nat Friedman and Arash Ferdowsi." },
+    { "date": "2024-08-15", "title": "Series A · $60M · $400M", "kind": "funding", "detail": "Led by Andreessen Horowitz." },
+    { "date": "2024-11-12", "title": "Acquires Supermaven", "kind": "ma", "detail": "AI code-completion startup founded by Jacob Jackson. Standalone product wound down in late 2025." },
+    { "date": "2024-12-17", "title": "Cursor 0.44 · Agent + Yolo Mode", "kind": "product", "detail": "Agent runs terminal commands, edits in parallel, and Cursor Tab expands. Yolo Mode auto-runs commands." },
+    { "date": "2024-12-20", "title": "Series B · $105M · $2.6B", "kind": "funding", "detail": "Led by Thrive Capital and a16z." },
+    { "date": "2025-01-15", "title": "$100M ARR", "kind": "funding", "detail": "Fifteen months from $1M ARR — among the fastest B2B SaaS ramps on record." },
+    { "date": "2025-02-19", "title": "Cursor 0.46 · Agent is default", "kind": "product", "detail": "Chat, Composer, and Agent unify. UI refresh, auto web search, MCP project servers." },
+    { "date": "2025-06-04", "title": "Cursor 1.0 · Bugbot · Background Agent GA", "kind": "product", "detail": "Automatic GitHub PR review, one-click MCP install, Jupyter support, Background Agent for all users." },
+    { "date": "2025-06-05", "title": "Series C · $900M · $9.9B · $500M ARR", "kind": "funding", "detail": "Led by Thrive Capital." },
+    { "date": "2025-06-30", "title": "Agents on web and mobile", "kind": "product", "detail": "Coding agents leave the desktop IDE." },
+    { "date": "2025-07-18", "title": "Koala talent + Resourcely security hire", "kind": "ma", "detail": "Enterprise-readiness team from Koala; Travis McPeak joins to lead security." },
+    { "date": "2025-08-07", "title": "Cursor Agent CLI", "kind": "product", "detail": "Agent available from the command line." },
+    { "date": "2025-10-29", "title": "Cursor 2.0 + Composer", "kind": "model", "detail": "First in-house agentic coding model. Multi-agent interface via git worktrees. Browser for Agent goes GA." },
+    { "date": "2025-11-13", "title": "Series D · $2.3B · $29.3B · $1B ARR", "kind": "funding", "detail": "Co-led by Accel and Coatue. Google and NVIDIA participate." },
+    { "date": "2025-12-19", "title": "Acquires Graphite", "kind": "ma", "detail": "Code-review startup. Cash-and-equity deal reported well above Graphite’s $290M valuation." },
+    { "date": "2026-02-15", "title": "Cloud Agents · $2B ARR · Composer 1.5", "kind": "product", "detail": "Async remote agents. Bloomberg reports $2B ARR." },
+    { "date": "2026-03-13", "title": "Cursor in JetBrains (ACP)", "kind": "product", "detail": "Joins Agent Communication Protocol registry; live inside JetBrains IDEs." },
+    { "date": "2026-03-19", "title": "Composer 2", "kind": "model", "detail": "Frontier-level coding model at $0.50/M input. Trained from Kimi K2.5 + RL." },
+    { "date": "2026-04-02", "title": "Cursor 3", "kind": "product", "detail": "Agent-first rebuild; Agents Window, Design Mode, /worktree and /best-of-n. No longer a VS Code fork." },
+    { "date": "2026-04-21", "title": "SpaceX $60B option", "kind": "funding", "detail": "SpaceX can buy Cursor for $60B later in 2026, or pay $10B for joint work." },
+    { "date": "2026-04-30", "title": "Cursor SDK", "kind": "product", "detail": "Runtime, harness, and models that power the IDE, embeddable in other products." },
+    { "date": "2026-05-18", "title": "Composer 2.5 · $3B ARR", "kind": "model", "detail": "Long-horizon agentic gains. Bloomberg: $3B annual sales rate." },
+    { "date": "2026-06-10", "title": "Bugbot 90-second reviews", "kind": "product", "detail": "3× faster, 22% cheaper, 10% more bugs. /review before push. Powered by Composer 2.5." },
+    { "date": "2026-06-16", "title": "SpaceX acquisition announced", "kind": "ma", "detail": "All-stock merger agreement. Cursor to join SpaceXAI. Close expected Q3 2026." },
+    { "date": "2026-07-22", "title": "Cursor Router", "kind": "model", "detail": "Production-trained router: Intelligence / Balance / Cost. Powers Auto mode across desktop, web, iOS, CLI, SDK." },
+    { "date": "2026-07-28", "title": "Cursor Start (India)", "kind": "product", "detail": "₹649/mo local plan with UPI. Grok + Composer, cloud agents, iOS." },
+    { "date": "2026-07-29", "title": "Cursor for iPad", "kind": "product", "detail": "iPad app on all paid plans. Inbox, full PR review, Apple Pencil markup." },
+    { "date": "2026-08-03", "title": "Google Workspace plugins", "kind": "product", "detail": "Agents read/write Gmail, Drive, and Calendar from Cursor." },
+    { "date": "2026-08-13", "title": "Cloud Agent Builds", "kind": "product", "detail": "Prebuilt environment snapshots. Internally 10× faster boots, 3× faster time-to-first-token." },
+    { "date": "2026-08-14", "title": "Merger close", "kind": "ma", "detail": "Cursor becomes a wholly owned SpaceX subsidiary. 389.3M SPCX Class A shares issued for common and preferred." }
+  ],
+  "merger": {
+    "effectiveDate": "2026-08-14",
+    "impliedEquityValueUsd": 60000000000,
+    "spcxClassAForCommonAndPreferred": 389289254,
+    "spcxClassAForVestedRsus": 1752426,
+    "spcxRsusAssumedUnvested": 29128326,
+    "spcxOptionsAssumed": 44365047,
+    "impliedVwapUsd": 154.127,
+    "source": "SpaceX Form 8-K filed Aug 14 2026 (sec.gov CIK 1181412)",
+    "structure": "Reverse triangular merger: X67 Inc. (Merger Sub) merged into Anysphere; Anysphere survived as a wholly owned SpaceX subsidiary."
+  },
+  "ownershipEstimate": {
+    "disclaimer": "Anysphere did not publish a cap table. Employee equity of 16.2% fully diluted is derived from 8-K award conversions (vested RSUs + unvested RSUs + options) versus 464.5M fully diluted SPCX units. Founder and investor slices below are Dealroom’s public 2026 estimate and are indicative, not a filing. Cursor is now 100% owned by SpaceX; these holders received SPCX Class A or assumed awards.",
+    "slices": [
+      { "label": "Founders (4)", "pct": 0.195, "kind": "dealroom" },
+      { "label": "Thrive Capital", "pct": 0.145, "kind": "dealroom" },
+      { "label": "Andreessen Horowitz (Dealroom unlabeled)", "pct": 0.11, "kind": "dealroom-inferred" },
+      { "label": "Employees / ESOP (Dealroom)", "pct": 0.11, "kind": "dealroom" },
+      { "label": "Seed angels (Friedman, Ferdowsi, Collison, others)", "pct": 0.11, "kind": "dealroom" },
+      { "label": "Other named funds (Accel, Coatue, DST, Google, NVIDIA — labels hidden)", "pct": 0.23, "kind": "dealroom" },
+      { "label": "Other / undisclosed", "pct": 0.10, "kind": "dealroom" }
+    ],
+    "employeeFullyDilutedFrom8k": 0.162
+  },
+  "sources": [
+    { "title": "SpaceX Form 8-K — completion of Cursor merger", "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026056945/spcx-20260814.htm", "date": "2026-08-14" },
+    { "title": "Wikipedia — Cursor (company)", "url": "https://en.wikipedia.org/wiki/Cursor_(company)", "date": "2026-08-14" },
+    { "title": "Bloomberg — Cursor Hits $3 Billion Annual Sales Rate", "url": "https://www.bloomberg.com/", "date": "2026-05-21" },
+    { "title": "Cursor changelog", "url": "https://cursor.com/changelog", "date": "2026-08-13" },
+    { "title": "Introducing Cursor 2.0 and Composer", "url": "https://cursor.com/blog/2-0", "date": "2025-10-29" },
+    { "title": "Cursor 3 changelog", "url": "https://cursor.com/changelog/3-0", "date": "2026-04-02" },
+    { "title": "Composer 2.5", "url": "https://cursor.com/changelog/composer-2-5", "date": "2026-05-18" },
+    { "title": "Dealroom — Anysphere | Cursor cap table (indicative)", "url": "https://dealroom.co/companies/anysphere-cursor/", "date": "2026-08" },
+    { "title": "Axis Intelligence — Cursor AI Statistics 2026", "url": "https://axis-intelligence.com/cursor-ai-statistics/", "date": "2026-07-02" }
+  ]
+}
